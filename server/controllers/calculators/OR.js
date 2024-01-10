@@ -1,7 +1,9 @@
 const {
     Assignment,
     HTMLOutputGenerator,
-    Transportation
+    Transportation,
+    ObjectiveFunction,
+    MinifiedNumber
 } = require("operations-research");
 
 module.exports = {
@@ -38,6 +40,14 @@ module.exports = {
             switch(method){
                 case "VA":transportationSolver.findIBFSUsingVogelApproximation();
                 break;
+                case "NW":transportationSolver.findIBFSUsingNorthWestCorner();
+                break;
+                case "RM":transportationSolver.findIBFSUsingRowMinima();
+                break;
+                case "CM":transportationSolver.findIBFSUsingColumnMinima();
+                break;
+                case "MM":transportationSolver.findIBFSUsingMatrixMinima();
+                break;
             }
         }catch(error){
             return res.status(400).json({
@@ -54,5 +64,13 @@ module.exports = {
                 htmlContent:htmlGenerator.getContent()
             }
         });
-    }
+    },
+    // calculateSimplex : (req,res,next) => {
+    //     const {objectiveCoefficients,optimizeType,constraints} = req.body;
+    //     const htmlGenerator = new HTMLOutputGenerator("SIMPLEX");
+    //     const simplexSolver = new ObjectiveFunction(objectiveConstraints.length,
+    //         objectiveCoefficients.map(coefficient => new MinifiedNumber(coefficient)),
+    //         constraints.map()
+    //         )
+    // }
 }
