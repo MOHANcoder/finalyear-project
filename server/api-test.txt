@@ -1,208 +1,201 @@
-{ 
-  "noOfDecisionVariables":4,
-  "objectiveCoefficients":[
+{
+  "noOfDecisionVariables": 4,
+  "objectiveCoefficients": [
     {
-      "dividend" : 15,
+      "dividend": 15,
       "divisor": 1
     },
     {
-      "dividend":6,
-      "divisor":1
+      "dividend": 6,
+      "divisor": 1
     },
     {
-      "dividend":9,
-      "divisor":1
+      "dividend": 9,
+      "divisor": 1
     },
     {
-      "dividend":2,
-      "divisor":1
+      "dividend": 2,
+      "divisor": 1
     }
   ],
-  "optimizeType" : "max",
-  "constraints":[
+  "optimizeType": "max",
+  "constraints": [
     {
-      "coefficient":[
-            {
-            "dividend":2,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":1
-            },
-            {
-            "dividend":5,
-            "divisor":1
-            },
-            {
-            "dividend":6,
-            "divisor":10
-            }
-        ],
-        "symbol":"<=",
-        "constant":{
-            "dividend":10,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 2,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 1
+        },
+        {
+          "dividend": 5,
+          "divisor": 1
+        },
+        {
+          "dividend": 6,
+          "divisor": 10
         }
+      ],
+      "symbol": "<=",
+      "constant": {
+        "dividend": 10,
+        "divisor": 1
+      }
     },
     {
-      "coefficient":[
-            {
-            "dividend":3,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":1
-            },
-            {
-            "dividend":3,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":4
-            }
-        ],
-        "symbol":"<=",
-        "constant":{
-            "dividend":12,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 3,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 1
+        },
+        {
+          "dividend": 3,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 4
         }
+      ],
+      "symbol": "<=",
+      "constant": {
+        "dividend": 12,
+        "divisor": 1
+      }
     },
-  
-  
     {
-      "coefficient":[
-            {
-            "dividend":7,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":0
-            }
-        ],
-        "symbol":"<=",
-        "constant":{
-            "dividend":35,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 7,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 1
         }
+      ],
+      "symbol": "<=",
+      "constant": {
+        "dividend": 35,
+        "divisor": 1
+      }
     }
   ],
-  "nonNegativeConstraints":[
-  
+  "nonNegativeConstraints": [
     {
-      "coefficient":[
-            {
-            "dividend":1,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            }
-        ],
-        "symbol":">=",
-        "constant":{
-            "dividend":0,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 1,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
         }
+      ],
+      "symbol": ">=",
+      "constant": {
+        "dividend": 0,
+        "divisor": 1
+      }
     },
     {
-      "coefficient":[
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            }
-        ],
-        "symbol":">=",
-        "constant":{
-            "dividend":0,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
         }
+      ],
+      "symbol": ">=",
+      "constant": {
+        "dividend": 0,
+        "divisor": 1
+      }
     },
-  
-  
     {
-      "coefficient":[
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            }
-        ],
-        "symbol":">=",
-        "constant":{
-            "dividend":0,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
         }
+      ],
+      "symbol": ">=",
+      "constant": {
+        "dividend": 0,
+        "divisor": 1
+      }
     },
-    
     {
-      "coefficient":[
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":0,
-            "divisor":1
-            },
-            {
-            "dividend":1,
-            "divisor":1
-            }
-        ],
-        "symbol":">=",
-        "constant":{
-            "dividend":0,
-            "divisor":1
+      "coefficient": [
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 0,
+          "divisor": 1
+        },
+        {
+          "dividend": 1,
+          "divisor": 1
         }
+      ],
+      "symbol": ">=",
+      "constant": {
+        "dividend": 0,
+        "divisor": 1
+      }
     }
-  
   ]
 }

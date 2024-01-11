@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const {calculateAssignment,calculateTransportation, calculateSimplex} = require("../controllers/calculators/OR");
+const ocrRouter = require("./ocrRoute");
+const calcRouter = require("./calcRoute");
 
-router.post("/calc/or/assignment",calculateAssignment);
-router.post("/calc/or/transportation",calculateTransportation);
-router.post("/calc/or/simplex",calculateSimplex);
-
+router.use("/ocr",ocrRouter);
+router.use("/calc",calcRouter);
 module.exports = router;

@@ -72,12 +72,12 @@ module.exports = {
         const simplexSolver = new ObjectiveFunction(
             noOfDecisionVariables,
             optimizeType,
-            objectiveCoefficients.map(coefficient => new MinifiedNumber(coefficient)),
+            objectiveCoefficients.map(coefficient => new MinifiedNumber(coefficient.dividend,coefficient.divisor)),
             constraints.map(constraint => new Constraint(
                 noOfDecisionVariables,
                 constraint.coefficient.map(coefficient => new MinifiedNumber(coefficient.dividend,coefficient.divisor)),
                 constraint.symbol,
-                constraint.constant
+                new MinifiedNumber(constraint.constant.dividend,constraint.constant.divisor)
             )),
             nonNegativeConstraints.map(constraint => new Constraint(
                 noOfDecisionVariables,
@@ -94,7 +94,7 @@ module.exports = {
             return res.status(400).json({
                 success: false,
                 message: "Error during calculations",
-                data: {}
+                data: {error,htmlContent:htmlGenerator.getContent()}
             });
         }
         return res.status(200).json({
