@@ -49,6 +49,7 @@ module.exports = {
                     break;
                 case "MM": transportationSolver.findIBFSUsingMatrixMinima();
                     break;
+                //Error required
             }
         } catch (error) {
             return res.status(400).json({
