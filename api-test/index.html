@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <button id="solver">solve</button>
+        <div id="content">
+
+        </div>
+    </div>
+    <script>
+        const button = document.getElementById("solver");
+        const costTable = [
+            [[18, 26, 17, 11], [13, 28, 14, 26], [38, 19, 18, 15], [19, 26, 24, 10]],
+            [[8, 4, 7], [5, 2, 3], [9, 6, 7], [9, 4, 8]],
+            [[20, 15, 18, 20, 25],
+            [18, 20, 12, 14, 15],
+            [21, 23, 25, 27, 25],
+            [17, 18, 21, 23, 20],
+            [18, 18, 16, 19, 20]],
+            [[10, 12, 19, 11],
+            [5, 10, 7, 8],
+            [12, 14, 13, 11],
+            [8, 15, 11, 9]]
+
+        ];
+        const contentContainer = document.getElementById("content");
+        button.addEventListener("click", async () => {
+            try {
+                const res = await fetch("http://localhost:1000/tools/calc/or/assignment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        costTable: costTable[3]
+                    })
+                });
+
+                const data = await res.json();
+                const { data: { cost, htmlContent } } = data;
+                contentContainer.innerHTML = htmlContent;
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+
+</html>

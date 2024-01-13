@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF AI</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <h1>Upload a pdf file</h1>
+    <form action="http://localhost:1000/tools/ocr/pdf" method="post" enctype="multipart/form-data">
+        <label>
+            Select the language :
+            <select name="language" id="input_language">
+                <option value="eng">English</option>
+                <option value="tam">Tamil</option>
+            </select>
+        </label>
+        <label>
+            Select pdf file :
+            <input type="file" name="pdf_input" id="pdf_input" accept="application/pdf,image/*"/>
+        </label>
+        <input type="submit" value="submit"/>
+    </form>
+</body>
+</html>
