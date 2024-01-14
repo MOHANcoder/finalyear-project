@@ -90,7 +90,10 @@ function Transportation() {
                 <label>Select solving method : 
                     <select value={solvingMethod} onInput={(e) => setSolvingMethod(e.target.value)}>
                         <option value="VA">Vogel's Approximation</option>
-                        <option value="NW">NorthWest</option>
+                        <option value="NW">NorthWest Corner</option>
+                        <option value="RM">Row Minima</option>
+                        <option value="CM">Column Minima</option>
+                        <option value="MM">Matrix Minima</option>
                     </select>
                 </label>
                 <button className='submit-button' onClick={createTable}>create</button>

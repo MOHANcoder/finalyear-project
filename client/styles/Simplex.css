@@ -1,0 +1,51 @@
+.create-container {
+    display: flex;
+    flex-direction: column;
+    max-width: max-content;
+    margin-top: 5vh;
+    row-gap: 2vh;
+}
+
+.solver-container > *{
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 1rem;
+    flex: 1 1 0;
+}
+
+.create-button{
+    flex-basis: 5vh;
+}
+
+.solver-container{
+    margin: 5vh 2vw;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    align-content: stretch;
+    flex-wrap: wrap;
+    background-color: rgb(254, 247, 255);
+    padding: 5vh 0;
+    box-shadow: 10px 10px 20px rgb(186, 35, 246),-10px -10px 20px rgb(229, 162, 255);
+}
+
+.info{
+    text-align: justify;
+}
+
+.constraint-inputs{
+    width: 4vw;
+}
+
+.constraint,.non-negative-constraints-container{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.constraint-element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
