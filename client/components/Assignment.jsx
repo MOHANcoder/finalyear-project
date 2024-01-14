@@ -10,7 +10,7 @@ function Assignment() {
     
     const setCellValue = (row,column,e) => {
         const newGrid = [...grid];
-        let value = parseInt(e.target.textContent);
+        let value = parseInt(e.target.value);
         newGrid[row][column] = isNaN(value) ? "" : value;
         setGrid(newGrid);
     }
@@ -40,9 +40,9 @@ function Assignment() {
             });
             const data = await res.json();
             const { data: { htmlContent } } = data;
-            setAnswerContent(htmlContent);
+            setAnswerContent(`<h3>Steps</h3>${htmlContent}`);
         } catch (error) {
-
+            setAnswerContent(`Error : ${error.message}`);
         }
     }
 
@@ -76,7 +76,9 @@ function Assignment() {
                     {grid.map((row, i) => (
                         <tr key={i}>
                             {row.map((col, j) => (
-                                <td key={j} contentEditable={true} onInput={(e) => setCellValue(i,j,e)}>{col}</td>
+                                <td key={j} contentEditable={true} >
+                                    <input type='text' className='cell' onInput={(e) => setCellValue(i,j,e)} />
+                                </td>
                             ))}
                         </tr>
                     ))}

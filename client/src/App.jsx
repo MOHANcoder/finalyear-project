@@ -3,12 +3,14 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 import Assignment from '../components/Assignment'
+import Transportation from '../components/Transportation'
 
 function App() {
 
   return (
     <>
-      <Assignment/>
+      {/* <Assignment/> */}
+      <Transportation/>
     </>
   )
 }
