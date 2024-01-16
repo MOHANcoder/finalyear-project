@@ -95,7 +95,7 @@ module.exports = {
             return res.status(400).json({
                 success: false,
                 message: "Error during calculations",
-                data: {error,htmlContent:htmlGenerator.getContent()}
+                data: {error:error.message,htmlContent:htmlGenerator.getContent()}
             });
         }
         return res.status(200).json({
