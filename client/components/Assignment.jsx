@@ -76,7 +76,7 @@ function Assignment() {
                     {grid.map((row, i) => (
                         <tr key={i}>
                             {row.map((col, j) => (
-                                <td key={j} contentEditable={true} >
+                                <td key={j} >
                                     <input type='text' className='cell' onInput={(e) => setCellValue(i,j,e)} />
                                 </td>
                             ))}

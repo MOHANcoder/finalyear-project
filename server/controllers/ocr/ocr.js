@@ -47,8 +47,7 @@ module.exports = {
                 const file = req.file;
                 const { language } = req.body;
                 if (file && file.mimetype.startsWith("image/")) {
-                    const f = await readFile(file);
-                    const text = await ocrImage(f, language);
+                    const text = await ocrImage(path.join(__dirname, "..","..","uploads", file.originalname), language);
                     return res.status(200).send(text);
                 } else {
                     throw new Error("not a image file");
