@@ -7,7 +7,7 @@ import Transportation from '../components/Transportation';
 import Simplex from '../components/Simplex';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import Tools from '../components/Tools'
-import Ocr from '../components/ocr'
+import Ocr from '../components/Ocr';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
