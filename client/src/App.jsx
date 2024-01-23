@@ -17,6 +17,7 @@ import BookIcon from '@mui/icons-material/Book';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import Dictionary from '../components/Dictionary';
 
 function App() {
 	const tools = [
@@ -81,6 +82,7 @@ function App() {
 						<Route path='/tools/calculators/assignment' element={<Assignment />} />
 						<Route path='/tools/calculators/transportation' element={<Transportation />} />
 						<Route path='/tools/calculators/simplex' element={<Simplex />} />
+						<Route path='/tools/dictionary' element={<Dictionary/>} />
 					</Routes>
 				</section>
 			</main>
