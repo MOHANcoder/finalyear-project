@@ -83,8 +83,8 @@ export default function Dictionary() {
                             <dt>
                                 {definition}
                             </dt>
-                            {example !== undefined && <dd><Typography component="i" >Example :</Typography>
-                                {example}
+                            {example !== undefined && <dd><Typography component="i" >Example : </Typography>
+                                <Typography variant="body1" fontStyle="italic" component="q">{example}</Typography>
                             </dd>}
                         </li>
                     )}</ul>

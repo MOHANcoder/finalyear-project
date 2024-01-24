@@ -18,6 +18,7 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import Dictionary from '../components/Dictionary';
+import Summarizer from '../components/Summarizer';
 
 function App() {
 	const tools = [
@@ -39,7 +40,7 @@ function App() {
 		{
 			title:'Text Summarizer',
 			icon:<SummarizeIcon style={{fontSize:'4rem'}} />,
-			link: 'summarize'
+			link: 'summarizer'
 		}
 	];
 
@@ -83,6 +84,7 @@ function App() {
 						<Route path='/tools/calculators/transportation' element={<Transportation />} />
 						<Route path='/tools/calculators/simplex' element={<Simplex />} />
 						<Route path='/tools/dictionary' element={<Dictionary/>} />
+						<Route path='/tools/summarizer' element={<Summarizer/>} />
 					</Routes>
 				</section>
 			</main>
