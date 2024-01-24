@@ -124,7 +124,7 @@ export default function Ocr() {
     <>
       <h1>OCR for Images</h1>
       <div className="info">
-        This OCR scanner works best for normal multiple languages
+        This OCR scanner works best for multiple languages
       </div>
       <form onSubmit={handleSubmit} method="post">
         <div>
@@ -143,7 +143,7 @@ export default function Ocr() {
         <input type="submit" value="submit" />
       </form>
       <div className="processed-content" style={{padding:'2rem', textAlign:'justify'}}>
-        {processedContent ? (<><h3>Processed Content : </h3>{processedContent}</>): <div>Processing....</div>}
+        {processedContent ? (processedContent !== ' ' && <><h3>Processed Content : </h3>{processedContent}</>): <div>Processing....</div>}
       </div>
     </>
   )

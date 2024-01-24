@@ -5,7 +5,8 @@ import { useState } from 'react';
 
 export default function Dictionary() {
     const [data, setData] = useState([]);
-    const [currentPage,setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [nodef, setNoDef] = useState(false);
 
     const search = async (event) => {
         const form = event.target;
@@ -13,17 +14,19 @@ export default function Dictionary() {
         let word = form.word.value;
         try {
             const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-            if(!res.ok){
+            if (!res.ok) {
                 throw new Error("Definition not found!");
             }
             const data = await res.json();
             setData(data);
+            setNoDef(false);
         } catch (error) {
-            setData({ error: error.message });
+            setData([]);
+            setNoDef(true);
         }
     };
 
-    const handlePagination = (event,page) =>{
+    const handlePagination = (event, page) => {
         setCurrentPage(page);
     }
 
@@ -73,7 +76,7 @@ export default function Dictionary() {
                         <GraphicEqIcon />
                     </IconButton>}
                 </Stack>
-                {word["meanings"].map(({ partOfSpeech, definitions, synonyms }) => <>
+                {word["meanings"].map(({ partOfSpeech, definitions, synonyms, antonyms }) => <>
                     <Typography variant="h5" key={partOfSpeech}>{partOfSpeech}</Typography>
                     <ul key={definitions}>{definitions.map(({ definition, example }) =>
                         <li key={definition}>
@@ -86,6 +89,7 @@ export default function Dictionary() {
                         </li>
                     )}</ul>
                     {synonyms.length > 0 && <Typography component="i" sx={{ fontWeight: 'bolder' }}>Synonyms : <Typography component="i">{synonyms.join(',')}</Typography> </Typography>}
+                    {antonyms.length > 0 && <Typography component="i" sx={{ fontWeight: 'bolder' }}>Antonyms : <Typography component="i">{antonyms.join(',')}</Typography> </Typography>}
                 </>)}
                 {sourceUrls !== undefined && sourceUrls.length > 0 && <Typography component="a" href={sourceUrls[0]} target="blank">Source : <Typography component="cite">{sourceUrls[0]}</Typography></Typography>}
             </Stack>
@@ -110,8 +114,10 @@ export default function Dictionary() {
                     <SearchIcon />
                 </IconButton>
             </Paper>
-            {data.length !== 0 && <Tile word={data[currentPage-1]} />}
-            {data.length > 1 && <Stack direction="row" sx={{justifyContent:'center',p:'2rem 0'}}><Pagination count={data.length} onChange={handlePagination}/></Stack>}
+            {nodef ? <Typography variant="h5" sx={{mt:'2rem'}}>No Definitions Found!</Typography> : <>
+                {data.length !== 0 && <Tile word={data[currentPage - 1]} />}
+                {data.length > 1 && <Stack direction="row" sx={{ justifyContent: 'center', p: '2rem 0' }}><Pagination count={data.length} onChange={handlePagination} /></Stack>}
+            </>}
         </>
     )
 }
