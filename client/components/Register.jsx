@@ -1,6 +1,6 @@
 import { Button, TextField, Typography, Box } from '@mui/material';
 import { useMediaQuery } from 'react-responsive';
-
+//Register
 export default function Register() {
     const isMobile = useMediaQuery({maxWidth:768});
     return (
