@@ -7,30 +7,28 @@ import { HfInference } from '@huggingface/inference';
 export default function Summarizer() {
     const hf = new HfInference(import.meta.env.ML_MODEL_KEY);
     const [text, setText] = useState('');
-    const [modelInvoked,setModelInvoked] = useState(false);
+    const [modelInvoked, setModelInvoked] = useState(false);
     const [summarizedContent, setSummarizedContent] = useState('');
-    
+
     const summarizeContent = async () => {
         setModelInvoked(true);
-        try{
-            const {summary_text} = await hf.summarization({
-                model:'facebook/bart-large-cnn',
-                inputs: text,
-                parameters:{
-                    max_length:100
-                }
+        try {
+            const { summary_text } = await hf.summarization({
+                model: 'facebook/bart-large-cnn',
+                inputs: text
             });
             let len = 0;
-            const typingInterval = setInterval(()=>{
-                setSummarizedContent(summary_text.slice(0,len));
+            const typingInterval = setInterval(() => {
+                setSummarizedContent(summary_text.slice(0, len));
                 len++;
-                if(len > summary_text.length){
+                if (len > summary_text.length) {
                     clearInterval(typingInterval);
                     setModelInvoked(false);
                 }
-            },20);
-        }catch(error){
+            }, 20);
+        } catch (error) {
             setSummarizedContent("Error During Processing.");
+            setModelInvoked(false);
         }
     }
 
@@ -57,11 +55,16 @@ export default function Summarizer() {
                     placeholder="Put pur sentences...."
                     minRows={5}
                     maxRows={10}
+                    maxLength={4000}
                     value={text}
-                    onChange={(e) => setText(e.target.value)}
+                    onChange={(e) => {
+                        if (e.target.value.length <= 4000)
+                            setText(e.target.value)
+                    }
+                    }
                     endDecorator={
                         <Typography variant="body-xs" ml='auto'>
-                            {text.length} character(s)
+                            {text.length}/4000
                         </Typography>
                     }
                 />
@@ -73,7 +76,11 @@ export default function Summarizer() {
                     onClick={summarizeContent}
                     disabled={modelInvoked}
                 >Summarize</LoadingButton>
-                <Paper elevation={0} variant="outlined">
+                <Paper elevation={0} variant="outlined" sx={{
+                    p: '1.5rem',
+                    textAlign: 'justify'
+                }}
+                >
                     {summarizedContent}
                 </Paper>
             </Stack>

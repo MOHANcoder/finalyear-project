@@ -19,6 +19,7 @@ import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import Dictionary from '../components/Dictionary';
 import Summarizer from '../components/Summarizer';
+import Register from '../components/Register';
 
 function App() {
 	const tools = [
@@ -64,6 +65,7 @@ function App() {
 	const [collapsed, setCollapsed] = useState(false);
 	const isMobile = useMediaQuery({maxWidth:768});
 	return (
+		<Register/> ||
 		<BrowserRouter>
 			<main className="main-container">
 				<Sidebar collapsed={isMobile || collapsed}>
