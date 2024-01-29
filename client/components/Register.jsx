@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-
+//Register
 export default function Register() {
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const inputFieldStyles = {
