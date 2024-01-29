@@ -34,8 +34,9 @@ module.exports = {
                 return next(createError(401, "Invalid credentials."));
             }
             const token = jwt.sign({ userId: storedUser._id, email }, process.env.SECRET_KEY, { expiresIn: "24h" });
-            res.cookie('token', token, { maxAge: cookieExpiry, httpOnly: true });
-            res.status(200).json({ message: "User Logged In successfully.", username: storedUser.name, role: storedUser.role });
+            res.cookie('token', token, { maxAge: cookieExpiry, httpOnly: false });
+            // res.status(200).json({ message: "User Logged In successfully.", username: storedUser.name, role: storedUser.role });
+            res.redirect("http://localhost:5173/");
         } catch (error) {
             next(error);
         }
@@ -45,6 +46,7 @@ module.exports = {
         try {
             res.clearCookie('token');
             res.status(200).json({ message: "User Logged Out Successfully." });
+            // res.redirect("http://localhost:5173/");
         } catch (error) {
             next(error);
         }

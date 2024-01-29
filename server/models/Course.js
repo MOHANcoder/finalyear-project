@@ -11,7 +11,7 @@ const courseSchema = new Schema({
         required:true
     },
     thumbnail:{
-        
+        type:String
     }
 },{
     timestamps:true

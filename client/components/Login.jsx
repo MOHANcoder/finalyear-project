@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-export default function Register() {
+export default function Login() {
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const inputFieldStyles = {
         height: '100%',
@@ -86,13 +86,9 @@ export default function Register() {
                 }}
                 
                 method='post'
-                action='http://localhost:1000/register'
+                action='http://localhost:1000/login'
             >
-                <div><h1>REGISTER</h1></div>
-                <div style={divStyles}>
-                    <input type="text" name='name' style={inputFieldStyles} placeholder='Enter your name' required />
-                    <div>{helperText['name']}</div>
-                </div>
+                <div><h1>Login</h1></div>
                 <div style={divStyles}>
                     <input type="text" name='email' style={inputFieldStyles} placeholder='Enter your email' required />
                     <div>{helperText['email']}</div>
@@ -101,22 +97,7 @@ export default function Register() {
                     <input type="password" name="password" style={inputFieldStyles} placeholder='Enter your password' required />
                     <div>{helperText['password']}</div>
                 </div>
-                <div
-                    style={{
-                        display:'flex',
-                        justifyContent:'center',
-                        padding: '0 20px',
-                        ...divStyles,
-                        boxSizing:'border-box'
-                    }}
-                >
-                    <label htmlFor="role" style={{flex:'1.5',fontSize:'large'}}>Select Your Role : </label>
-                    <select name="role" id='role' style={{flex:'1'}} required>
-                        <option value="student">Student</option>
-                        <option value="instructor">Instructor</option>
-                    </select>
-                </div>
-                <input type="submit" value="REGISTER" style={submitButtonStyles} onMouseOver={
+                <input type="submit" value="LOGIN" style={submitButtonStyles} onMouseOver={
                     (e) => e.target.style.boxShadow = '0 0 6px 1px grey'
                     }
                     onMouseLeave={
@@ -124,7 +105,7 @@ export default function Register() {
                     }    
                 />
                 <div>
-                    Already have an account? <a href="login">Login</a>
+                    Don't have an account? <a href="register">register</a>
                 </div>
             </form>
         </div>
