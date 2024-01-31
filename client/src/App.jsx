@@ -24,6 +24,7 @@ import Login from '../components/Login';
 import ExploreIcon from '@mui/icons-material/Explore';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Explore from '../components/Explore';
 
 function App() {
 	const tools = [
@@ -98,8 +99,8 @@ function App() {
 			{ !isAuthenticated? 
 				<Routes>
 					<Route path='/'>
-						<Route path='register' index element={<Register/>} />
-						<Route index element={<Login/>} />
+						<Route path='register' element={<Register/>} />
+						<Route path='login' element={<Login/>} />
 					</Route>
 				</Routes>
 			 : 
@@ -110,7 +111,7 @@ function App() {
 							<MenuItem className='menu1' icon={<MenuRoundedIcon onClick={() => setCollapsed(!collapsed)} />}>
 								<h2>Welcome</h2>
 							</MenuItem>
-							<MenuItem icon={<ExploreIcon/>}>Explore</MenuItem>
+							<MenuItem icon={<ExploreIcon/>} component={<Link to='/explore' />}>Explore</MenuItem>
 							<MenuItem icon={<ExtensionIcon/>}>Puzzles</MenuItem>
 							<MenuItem className='menu2' icon={<BuildIcon />} component={<Link to="/tools" />}>Tools</MenuItem>
 							<MenuItem icon={<LogoutIcon/>} onClick={handleLogout}>Logout</MenuItem>
@@ -127,6 +128,7 @@ function App() {
 							<Route path='/tools/calculators/simplex' element={<Simplex />} />
 							<Route path='/tools/dictionary' element={<Dictionary />} />
 							<Route path='/tools/summarizer' element={<Summarizer />} />
+							<Route path='/explore' element={<Explore/>} />
 						</Routes>
 					</section>
 				</main>
