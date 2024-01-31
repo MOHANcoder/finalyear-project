@@ -1,4 +1,5 @@
 const {Schema,model} = require("mongoose");
+const {ObjectId} = Schema.Types;
 
 const courseSchema = new Schema({
     name:{
@@ -6,12 +7,43 @@ const courseSchema = new Schema({
         required:true
     },
     createdBy:{
-        type:Schema.Types.ObjectId,
+        type:ObjectId,
         ref:'User',
         required:true
     },
     thumbnail:{
-        type:String
+        type:String,
+        required:true
+    },
+    price:{
+        type:Number,
+        required:true
+    },
+    enrolledStudents:{
+        type:[{
+            type:ObjectId,
+            ref:'User'
+        }]
+    },
+    modules:{
+        type:[{
+            type:ObjectId,
+            ref:'Module'
+        }],
+        required:true
+    },
+    forum:{
+        type:ObjectId,
+        ref:'Forum',
+        required:true
+    },
+    summary:{
+        type:String,
+        required:true
+    },
+    tags:{
+        type:[String],
+        required:true
     }
 },{
     timestamps:true

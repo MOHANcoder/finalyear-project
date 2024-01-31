@@ -73,7 +73,6 @@ function App() {
 
 	useEffect(()=>{
 		const token = document.cookie.split(";").find( cookie => cookie.startsWith("token="));
-		console.log(token,document.cookie);
 		if(token !== undefined){
 			setIsAuthenticated(true);
 		}else{
