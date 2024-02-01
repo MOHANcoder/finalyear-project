@@ -4,19 +4,25 @@ const cors = require("cors");
 const {connectDB} = require("./db");
 const toolsRoute = require("./routes/toolsRoute");
 const { register, login, authenticate, logout } = require("./controllers/auth");
+const { getAllCourses } = require('./controllers/explore');
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 connectDB();
 
+app.use(cors({
+    origin:'http://localhost:5173',
+    credentials:true
+}));
 app.use(cookieParser());
-app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/tools",toolsRoute);
 app.post("/register",register);
 app.post("/login",login);
 app.get("/logout",authenticate,logout);
+app.get("/explore",authenticate,getAllCourses);
 
 app.use("*", (req, res) => {
     return res.status(404).send("<html><head><title>404</title></head><body><h1>Page Not Found</h1></body></html>");
