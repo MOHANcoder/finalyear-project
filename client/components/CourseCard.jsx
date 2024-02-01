@@ -17,15 +17,18 @@ export default function CourseCard({
                     height: '150px',
                     borderRadius: '10px 10px 0px 0px'
                 }}
-            ></div>
+            >
+                <div style={{
+                    backgroundColor: 'lightblue', width: 'max-content',
+                    borderTopLeftRadius: '10px', padding: '5px', fontWeight: 'bolder',
+                    boxShadow:'0px 0px 5px 1px blueviolet'
+                }}>FREE</div>
+            </div>
             <div
                 style={{
                     height: '200px',
                     marginTop: '10px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent:'space-between',
-                    padding:'5px'
+                    padding: '5px'
                 }}
             >
 
@@ -37,7 +40,8 @@ export default function CourseCard({
                         textOverflow: 'ellipsis',
                         overflow: "hidden",
                         margin: 0,
-                        fontWeight: 'bolder'
+                        fontWeight: 'bolder',
+                        height: '50px'
                     }}
                 >{name}</p>
 
@@ -49,12 +53,12 @@ export default function CourseCard({
                     textAlign: 'justify',
                     textOverflow: 'ellipsis',
                     overflow: "hidden",
-                    lineClamp: 2
+                    height: '50px'
                 }}>{summary}</div>
 
 
 
-                <div >{instructor}</div>
+                
 
 
 
@@ -63,7 +67,7 @@ export default function CourseCard({
                 <div style={{ display: 'flex' }}>
                     <div style={{
                         display: 'flex',
-                        width: '25%'
+                        width: '25%',
                     }}>
                         <AccountCircleIcon sx={{ width: '1.3em', height: '1.3em', backgroundColor: 'white', borderRadius: '50%' }} />
                         <AccountCircleIcon sx={{ ml: '-0.74em', width: '1.3em', height: '1.3em', backgroundColor: 'white', borderRadius: '50%' }} />
@@ -72,10 +76,10 @@ export default function CourseCard({
                     {enrolledCount ?? '10+ enrolled'}
                 </div>
 
-
+                <div style={{fontSize:'small',textAlign:'center'}} > <b>OFFERED BY </b> <a href="">{instructor}</a> </div>
                 <div
                     style={{
-                        textAlign: 'center'                        
+                        textAlign: 'center'
                     }}
                 ><a href="">VIEW DETAILS</a>
                 </div>
