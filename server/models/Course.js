@@ -30,12 +30,12 @@ const courseSchema = new Schema({
             type:ObjectId,
             ref:'Module'
         }],
-        required:true
+        // required:true
     },
     forum:{
         type:ObjectId,
         ref:'Forum',
-        required:true
+        // required:true
     },
     summary:{
         type:String,
@@ -43,7 +43,7 @@ const courseSchema = new Schema({
     },
     tags:{
         type:[String],
-        required:true
+        // required:true
     }
 },{
     timestamps:true

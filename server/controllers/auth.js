@@ -71,9 +71,9 @@ module.exports = {
             }
         }
     },
-    authorize: async (roles) => (req, res, next) => {
-        const { role } = req.user;
-        if (roles.includes(role)) {
+    authorize: async (req, res, next) => {
+        const { role } = await User.findById(req.user.userId);
+        if (role) {
             next();
         } else {
             next(createError(403, "Forbidden by the server, Insufficient privileges."));

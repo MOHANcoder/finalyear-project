@@ -3,8 +3,8 @@ const app = express();
 const cors = require("cors");
 const {connectDB} = require("./db");
 const toolsRoute = require("./routes/toolsRoute");
-const { register, login, authenticate, logout } = require("./controllers/auth");
-const { getAllCourses } = require('./controllers/explore');
+const { register, login, authenticate, logout, authorize } = require("./controllers/auth");
+const { getAllCourses, createCourse } = require('./controllers/explore');
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
@@ -23,6 +23,7 @@ app.post("/register",register);
 app.post("/login",login);
 app.get("/logout",authenticate,logout);
 app.get("/explore",authenticate,getAllCourses);
+app.post("/mycourses/create",authenticate,authorize,createCourse);
 
 app.use("*", (req, res) => {
     return res.status(404).send("<html><head><title>404</title></head><body><h1>Page Not Found</h1></body></html>");
