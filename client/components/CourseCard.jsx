@@ -1,6 +1,6 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 export default function CourseCard({
-    name, instructor, rating, price, summary, enrolledCount
+    name, instructor, rating, price, summary, enrolledStudents,thumbnail
 }) {
     return (
         <div
@@ -13,7 +13,7 @@ export default function CourseCard({
             }}>
             <div
                 style={{
-                    background: "url('../src/assets/banner.jpg') center/cover no-repeat",
+                    background: `url(${thumbnail ? thumbnail :'../src/assets/banner.jpg'}) center/cover no-repeat`,
                     height: '150px',
                     borderRadius: '10px 10px 0px 0px'
                 }}
@@ -22,7 +22,7 @@ export default function CourseCard({
                     backgroundColor: 'lightblue', width: 'max-content',
                     borderTopLeftRadius: '10px', padding: '5px', fontWeight: 'bolder',
                     boxShadow:'0px 0px 5px 1px blueviolet'
-                }}>FREE</div>
+                }}>{price === 0 ? "FREE" : "PAID"}</div>
             </div>
             <div
                 style={{
@@ -53,7 +53,8 @@ export default function CourseCard({
                     textAlign: 'justify',
                     textOverflow: 'ellipsis',
                     overflow: "hidden",
-                    height: '50px'
+                    height: '50px',
+                    fontSize:'small'
                 }}>{summary}</div>
 
 
@@ -64,7 +65,7 @@ export default function CourseCard({
 
 
 
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex',fontSize:'small' }}>
                     <div style={{
                         display: 'flex',
                         width: '25%',
@@ -73,7 +74,7 @@ export default function CourseCard({
                         <AccountCircleIcon sx={{ ml: '-0.74em', width: '1.3em', height: '1.3em', backgroundColor: 'white', borderRadius: '50%' }} />
                         <AccountCircleIcon sx={{ ml: '-0.74em', width: '1.3em', height: '1.3em', backgroundColor: 'white', borderRadius: '50%' }} />
                     </div>
-                    {enrolledCount ?? '10+ enrolled'}
+                    {enrolledStudents.length + ' enrolled'}
                 </div>
 
                 <div style={{fontSize:'small',textAlign:'center'}} > <b>OFFERED BY </b> <a href="">{instructor}</a> </div>

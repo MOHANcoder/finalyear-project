@@ -52,7 +52,7 @@ export default function Summarizer() {
                 spacing={2}
             >
                 <Textarea
-                    placeholder="Put pur sentences...."
+                    placeholder="Put your sentences...."
                     minRows={5}
                     maxRows={10}
                     maxLength={4000}

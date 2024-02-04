@@ -33,10 +33,10 @@ module.exports = {
             if (!isMatched) {
                 return next(createError(401, "Invalid credentials."));
             }
-            const token = jwt.sign({ userId: storedUser._id, email }, process.env.SECRET_KEY, { expiresIn: "24h" });
+            const token = jwt.sign({ userId: storedUser._id, email, role: storedUser.role }, process.env.SECRET_KEY, { expiresIn: "24h" });
             res.cookie('token', token, { maxAge: cookieExpiry, httpOnly: false });
-            // res.status(200).json({ message: "User Logged In successfully.", username: storedUser.name, role: storedUser.role });
-            res.redirect("http://localhost:5173/");
+            res.status(200).json({ message: "User Logged In successfully.", username: storedUser.name, role: storedUser.role });
+            // res.redirect("http://localhost:5173/");
         } catch (error) {
             next(error);
         }
@@ -71,9 +71,8 @@ module.exports = {
             }
         }
     },
-    authorize: async (req, res, next) => {
-        const { role } = await User.findById(req.user.userId);
-        if (role) {
+    authorize: (roles) => async (req, res, next) => {
+        if (roles.includes(req.user.role)) {
             next();
         } else {
             next(createError(403, "Forbidden by the server, Insufficient privileges."));

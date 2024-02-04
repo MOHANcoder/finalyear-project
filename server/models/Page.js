@@ -3,7 +3,7 @@ const {ObjectId} = Schema.Types;
 
 const PageSchema = new Schema({
     content:{
-        type:Object,
+        type:String,
         required:true
     },
     comments:[{

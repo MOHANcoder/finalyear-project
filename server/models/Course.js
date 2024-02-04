@@ -17,7 +17,7 @@ const courseSchema = new Schema({
     },
     price:{
         type:Number,
-        required:true
+        // required:true
     },
     enrolledStudents:{
         type:[{

@@ -86,7 +86,30 @@ export default function Login() {
                 }}
                 
                 method='post'
-                action='http://localhost:1000/login'
+                onSubmit={async (e) => {
+                    e.preventDefault();
+                    try{
+                        const res = await fetch('http://localhost:1000/login',{
+                            method:'POST',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            credentials:'include',
+                            body:JSON.stringify({
+                                email:e.target.email.value,
+                                password:e.target.password.value
+                            })
+                        });
+                        const data = await res.json();
+                        if(data.error !== undefined){
+                            throw new Error(data.error.message);
+                        }
+                        window.location.href = "/";
+                    }catch(error){
+                        alert(error.message);
+                        window.location.reload();
+                    }
+                }}
             >
                 <div><h1>Login</h1></div>
                 <div style={divStyles}>

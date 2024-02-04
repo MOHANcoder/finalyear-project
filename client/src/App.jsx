@@ -25,6 +25,10 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Explore from '../components/Explore';
+import Home from '../components/Home';
+import SchoolIcon from '@mui/icons-material/School';
+import MyCourses from '../components/MyCourses';
+import CreateCourse from '../components/CreateCourse';
 
 function App() {
 	const tools = [
@@ -70,10 +74,15 @@ function App() {
 	const [collapsed, setCollapsed] = useState(false);
 	const isMobile = useMediaQuery({ maxWidth: 768 });
 	const [isAuthenticated,setIsAuthenticated] = useState(false);
+	const [userRole,setUserRole] = useState('');
 
 	useEffect(()=>{
 		const token = document.cookie.split(";").find( cookie => cookie.startsWith("token="));
 		if(token !== undefined){
+			const payload = JSON.parse(atob((token.split('.')[1]).replace('-','+').replace('_','/')));
+			if(payload){
+				setUserRole(payload['role']);
+			}
 			setIsAuthenticated(true);
 		}else{
 			setIsAuthenticated(false);
@@ -98,26 +107,29 @@ function App() {
 			{ !isAuthenticated? 
 				<Routes>
 					<Route path='/'>
+						<Route index element={<Home/>}/>
 						<Route path='register' element={<Register/>} />
 						<Route path='login' element={<Login/>} />
 					</Route>
 				</Routes>
-			 : 
+			 :
 
 				<main className="main-container">
 					<Sidebar collapsed={isMobile || collapsed}>
 						<Menu>
-							<MenuItem className='menu1' icon={<MenuRoundedIcon onClick={() => setCollapsed(!collapsed)} />}>
+							<MenuItem className='menu1' icon={<MenuRoundedIcon/>} onClick={() => setCollapsed(!collapsed)}>
 								<h2>Welcome</h2>
 							</MenuItem>
 							<MenuItem icon={<ExploreIcon/>} component={<Link to='/explore' />}>Explore</MenuItem>
 							<MenuItem icon={<ExtensionIcon/>}>Puzzles</MenuItem>
 							<MenuItem className='menu2' icon={<BuildIcon />} component={<Link to="/tools" />}>Tools</MenuItem>
+							<MenuItem icon={<SchoolIcon/>} component={<Link to="/mycourses"/>}>Mycourses</MenuItem>
 							<MenuItem icon={<LogoutIcon/>} onClick={handleLogout}>Logout</MenuItem>
 						</Menu>
 					</Sidebar>
 					<section className="main-content">
 						<Routes>
+							<Route path='/' element={userRole}/>
 							<Route path='/tools' element={<Tools tools={tools} />} />
 							<Route path='/tools/ocr' element={<Ocr />} />
 							<Route path='/tools/ocr/image' element={<Ocr />} />
@@ -128,6 +140,8 @@ function App() {
 							<Route path='/tools/dictionary' element={<Dictionary />} />
 							<Route path='/tools/summarizer' element={<Summarizer />} />
 							<Route path='/explore' element={<Explore/>} />
+							<Route path='/mycourses' element={<MyCourses role={userRole}/>}/>
+							<Route path='/mycourses/create' element={<CreateCourse/>}/>
 						</Routes>
 					</section>
 				</main>
