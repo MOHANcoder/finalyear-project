@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+import {Edit,Delete,Publish} from '@mui/icons-material';
 
 export default function MyCourses({ role }) {
     const [courses, setCourses] = useState([]);
@@ -7,29 +8,37 @@ export default function MyCourses({ role }) {
     const CourseListItem = ({name, instructor, rating, price, summary, enrolledCount,thumbnail}) =>{
         return (<div style={{
             display:'flex',
-            height:'100px',
+            height:'150px',
             width:'100%',
             columnGap:'20px',
-            marginTop:'10px'
+            marginTop:'10px',
+            padding:'10px',
+            border:'1px solid',
+            boxSizing:'border-box'
         }}>
             <div style={{
-                width:'100px',
+                width:'20%',
+                minWidth:'100px',
                 height:'100%',
                 background:`url(${thumbnail ? thumbnail :'../src/assets/banner.jpg'}) center/cover no-repeat`,
             }}>
 
             </div>
             <div style={{
-                width:'50%'
+                width:'65%',
+                display:'flex',
+                flexDirection:'column'
             }}>
-                <div>{name}</div>
+                <div style={{
+                    width:'100%'
+                }}><h5>{name}</h5></div>
                 <div style={{
                     display:'flex',
                     columnGap:'10px'
                 }}>
-                    <button>Edit</button>
-                    <button>Delete</button>
-                    <button>Publish</button>
+                    <button><Edit/></button>
+                    <button><Delete/></button>
+                    <button><Publish/></button>
                 </div>
             </div>
         </div>);
@@ -79,7 +88,7 @@ export default function MyCourses({ role }) {
                     height:'50px'
                 }}>+</Link>
                 <div>
-                    {courses.map(course => <CourseListItem {...course}/>)}
+                    {courses.map((course,i) => <CourseListItem key={i} {...course}/>)}
                 </div>
             </div>}
         </div>
