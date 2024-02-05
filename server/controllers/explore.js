@@ -57,5 +57,13 @@ module.exports = {
         }catch(error){
             next(error);
         }
+    },
+    updateCourse : async (req,res,next) => {
+        try{
+            const {name,overview,modules} = req.body;
+
+        }catch(error){
+            next(error);
+        }
     }
 }

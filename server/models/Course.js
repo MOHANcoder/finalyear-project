@@ -41,6 +41,10 @@ const courseSchema = new Schema({
         type:String,
         required:true
     },
+    overview:{
+        type:String,
+        required:true
+    },
     tags:{
         type:[String],
         // required:true
