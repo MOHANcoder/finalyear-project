@@ -29,6 +29,8 @@ import Home from '../components/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import MyCourses from '../components/MyCourses';
 import CreateCourse from '../components/CreateCourse';
+import PageEditor from '../components/PageEditor';
+import CourseBuilder from '../components/CourseBuilder';
 
 function App() {
 	const tools = [
@@ -142,6 +144,8 @@ function App() {
 							<Route path='/explore' element={<Explore/>} />
 							<Route path='/mycourses' element={<MyCourses role={userRole}/>}/>
 							<Route path='/mycourses/create' element={<CreateCourse/>}/>
+							<Route path='/mycourses/build/:id' element={<CourseBuilder/>} />
+							<Route path='/mycourses/edit/:id' element={<PageEditor/>} />
 						</Routes>
 					</section>
 				</main>
