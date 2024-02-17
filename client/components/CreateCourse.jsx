@@ -13,30 +13,62 @@ export default function CreateCourse() {
         padding: '0 20px',
         margin: 0,
         border: 'none',
-        boxSizing:'border-box',
-        fontSize:'large',
-        minHeight:'40px'
+        boxSizing: 'border-box',
+        fontSize: 'large',
+        minHeight: '40px'
     };
 
-    const [courseType,setCourseType] = useState('free');
-    const [thumbnail,setThumbnail] = useState('');
+    const handleChange = (e) => {
+        const element = e.target;
+        const validators = {
+            name: (value) => {
+                if (!(/[\w]+/.test(value))) {
+                    return "Name cannot contain special characters except underscore";
+                } else {
+                    return "";
+                }
+            },
+            price: (value) => {
+                if (isNaN(parseInt(value))) {
+                    return "Enter a valid number";
+                }
+                if (parseInt(value) <= 0) {
+                    return "Enter a positive value";
+                }
+                return "";
+            }
+        };
+
+        setHelperText((previous) => {
+            return { ...previous, [element.name]: validators[element.name](element.value) };
+        });
+    };
+
+    const [courseType, setCourseType] = useState('free');
+    const [thumbnail, setThumbnail] = useState('');
+    const [helperText, setHelperText] = useState({ name: '', price: '' });
+    const [passed,setPassed] = useState(true);
 
     return (
         <main style={{
-            display:'flex',
-            justifyContent:'center',
-            alignItems:'center',
-            width:'100%',
-            height:'100%'
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '100%'
         }}>
             <section style={{
-                boxShadow:'0px 0px 2px 1px grey',
-                minWidth:'200px',
-                maxWidth:'400px',
-                borderRadius:'10px'
+                boxShadow: '0px 0px 2px 1px grey',
+                minWidth: '200px',
+                maxWidth: '400px',
+                borderRadius: '10px'
             }}>
                 <div>
-                    <h2 style={{textAlign:'center'}}>Course Details</h2>
+                    <h2 style={{ textAlign: 'center' }}>Course Details</h2>
+                    {!passed && <p style={{
+                        color:'red',
+                        textAlign:'center'
+                    }}>Invalid values are entered.</p> }
                 </div>
                 <form
                     style={{
@@ -46,47 +78,78 @@ export default function CreateCourse() {
                         alignItems: 'center',
                         rowGap: '20px'
                     }}
-                    method="POST"
-                    action="http://localhost:1000/mycourses/create"
+
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        if(!Object.values(helperText).every(value => value === '')){
+                            setPassed(false);
+                            return;
+                        }
+                        setPassed(true);
+                        try {
+                            const res = await fetch('http://localhost:1000/mycourses/create', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                credentials: 'include',
+                                body: JSON.stringify({
+                                    name: e.target.name.value,
+                                    thumbnail: e.target.thumbnail.value,
+                                    price:parseInt(e.target.price.value),
+                                    summary:e.target.summary.value
+                                })
+                            });
+                            const data = await res.json();
+                            if (data.error !== undefined) {
+                                throw new Error(data.error.message);
+                            }
+                            window.location.href = "/mycourses";
+                        } catch (error) {
+                            alert(error.message);
+                            window.location.reload();
+                        }
+                    }}
                 >
                     <div style={divStyles}>
                         <label htmlFor="course_name">Course Name</label>
-                        
-                        <input type="text" id="course_name" name="name" style={inputFieldStyles} />
-                        <div></div>
+
+                        <input required type="text" id="course_name" name="name" style={inputFieldStyles} onChange={handleChange} />
+                        <div>{helperText['name']}</div>
                     </div>
                     <div style={divStyles}>
                         <label htmlFor="course_thumbnail">Course Thumbnail :</label>
-                        
-                        <input type="file" id="course_thumbnail" accept="image/*" style={inputFieldStyles} onChange={(e)=>{
+
+                        <input required type="file" id="course_thumbnail" accept="image/*" style={inputFieldStyles} onChange={(e) => {
                             const fileInput = e.target;
                             const file = fileInput.files[0];
                             const reader = new FileReader();
-                            reader.onload = () =>{
+                            reader.onload = () => {
                                 setThumbnail(`data:${file.type};base64,${btoa(reader.result)}`);
                             }
                             reader.readAsBinaryString(file);
                         }} />
-                        <input type="text" style={{visibility:'hidden'}} value={thumbnail} name="thumbnail"  />
+                        <input required type="text" style={{ visibility: 'hidden' }} defaultValue={thumbnail} name="thumbnail" />
+                        {thumbnail && <img src={thumbnail} width="150px" height="100px" alt="course image" style={{ margin: '0 auto', display: 'block', border: '1px dashed' }} />}
                     </div>
                     <div style={divStyles}>
                         <label htmlFor="course_type">Course Type :</label>
-                        
+
                         <select name="course_type" id="course_type" onChange={(e) => setCourseType(e.target.value)} style={inputFieldStyles}>
                             <option value="free">Free</option>
                             <option value="paid">Paid</option>
                         </select>
-                        <div style={{display:courseType === "paid"?'':'none'}}>
+                        <div style={{ display: courseType === "paid" ? '' : 'none' }}>
                             <label htmlFor="price">Price :</label>
                             <br />
-                            <input type="text" name="price" id="price" style={inputFieldStyles} defaultValue={0} />
-                            <div></div>
+                            <input required type="text" name="price" id="price" style={inputFieldStyles} defaultValue={0} onChange={handleChange} />
+                            <div>{helperText['price']}</div>
                         </div>
                     </div>
                     <div style={divStyles}>
-                        <label htmlFor="course_summary">Course summmary :</label>
-                        
-                        <textarea name="summary" id="course_summary" style={inputFieldStyles} rows={5} placeholder="Course Summary"></textarea>
+                        <label htmlFor="course_summary">Course summary :</label>
+
+                        <textarea required name="summary" id="course_summary" style={inputFieldStyles} rows={5} placeholder="Course Summary"></textarea>
                     </div>
                     <div style={divStyles}>
                         <input type="submit" value="submit" />

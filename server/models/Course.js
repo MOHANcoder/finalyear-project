@@ -43,7 +43,7 @@ const courseSchema = new Schema({
     },
     overview:{
         type:String,
-        required:true
+        // required:true
     },
     tags:{
         type:[String],

@@ -11,7 +11,7 @@ const titleStyles = {
     fontSize: 'x-large'
 };
 
-const ChapterCard = ({ name, id, setCourseChapters, courseChapters }) => {
+const ChapterCard = ({id, setCourseChapters, courseChapters,removeChapter }) => {
     return (
         <div style={{
             boxShadow: '0px 0px 4px 1px grey',
@@ -74,9 +74,10 @@ export default function ModuleAccordian({ name, editable, chapters, detailsStyle
                 <div style={{
                     padding: '5px 15px'
                 }}>
-                    {courseChapters.map((chapter, i) => <ChapterCard key={i} id={i} name={chapter}
+                    {courseChapters.map((chapter, i) => <ChapterCard key={i} id={i}
                         setCourseChapters={setCourseChapters}
                         courseChapters={courseChapters}
+                        removeChapter={removeChapter}
                     />)}
                 </div>
             </>}

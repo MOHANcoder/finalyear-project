@@ -2,8 +2,11 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import ModuleAccordian from "./ModuleAccordian";
 import { Add } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
 export default function CourseBuilder() {
+
+    const {id} = useParams(); 
 
     const inputFieldStyles = {
         // height: '70%',
@@ -21,35 +24,6 @@ export default function CourseBuilder() {
         width: '100%'
     };
 
-    const handleChange = (e) => {
-        const element = e.target;
-        if (element.name === "role") {
-            return;
-        }
-        const validators = {
-            name: (value) => {
-                if (!(/[\w]+/.test(value))) {
-                    return "Name cannot contain special characters except underscore";
-                } else {
-                    return "";
-                }
-            },
-            // modules:(value) => {
-            //     if(isNaN(parseInt(value))){
-            //         return "Enter a valid number";
-            //     }
-            //     if(parseInt(value) <= 0){
-            //         return "Enter a positive value";
-            //     }
-            //     return "";
-            // }
-        };
-
-        setHelperText((previous) => {
-            return { ...previous, [element.name]: validators[element.name](element.value) };
-        });
-    };
-
     const addModule = () => {
         setModules((pre) => [...pre,{name:"new Module",chapters:["new chapter"]}]);
     };
@@ -60,7 +34,6 @@ export default function CourseBuilder() {
         });
     };
 
-    const [helperText, setHelperText] = useState({ name: '', modules: '' });
     const [courseSummary, setCourseSummary] = useState('');
     const [modules, setModules] = useState([{ name: 'Introduction', chapters: ['Chapter 1'] }]);
 
@@ -84,8 +57,7 @@ export default function CourseBuilder() {
         >
             <div style={divStyles}>
                 <label>Course Name : </label>
-                <input type="text" name="name" style={inputFieldStyles} onChange={handleChange} />
-                <div>{helperText['name']}</div>
+                <input type="text" name="name" style={inputFieldStyles} />
             </div>
 
             <div style={{ ...divStyles }}>
