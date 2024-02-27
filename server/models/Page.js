@@ -2,6 +2,10 @@ const {Schema,model} = require("mongoose");
 const {ObjectId} = Schema.Types;
 
 const PageSchema = new Schema({
+    title:{
+        type:String,
+        required:true
+    },
     content:{
         type:String,
         required:true
@@ -10,7 +14,7 @@ const PageSchema = new Schema({
         type:ObjectId,
         ref:'Chat'
     }],
-    xps:Int8Array
+    xps:Number
 },{
     timestamps:true
 });

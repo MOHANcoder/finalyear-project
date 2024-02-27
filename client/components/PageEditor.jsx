@@ -1,6 +1,8 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
+import CourseEditorSideBar from './CourseEditorSideBar';
+import '../styles/PageEditor.css';
 
 export default function PageEditor() {
 
@@ -19,9 +21,35 @@ export default function PageEditor() {
         ],
     };
 
-    const [value, setValue] =  useState("");
+    const [value, setValue] = useState("");
 
     return (
-        <ReactQuill  modules={modules} theme="snow" onChange={setValue} placeholder="Content goes here..." />
+        <div style={{
+            display: 'flex'
+        }}>
+            <CourseEditorSideBar />
+            <div style={{
+                height: '94dvh',
+                width: '100%',
+                backgroundColor: 'white'
+            }}>
+                <div style={{
+                    height:'95%',
+                    border:'1px solid'
+                }}>
+                    <ReactQuill style={{
+                        height: '90%'
+                    }} modules={modules} theme="snow" onChange={setValue} placeholder="Content goes here..." />
+                </div>
+                <div className='bottom-ribbon' style={{
+                    height: '50px',
+                    border:'1px solid',
+                    display:'flex',
+                    alignItems:'center'
+                }}>
+                    <div>SAVE</div>
+                </div>
+            </div>
+        </div>
     );
 }

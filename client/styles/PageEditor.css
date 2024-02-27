@@ -1,0 +1,10 @@
+.bottom-ribbon{
+    padding: 2px;
+}
+.bottom-ribbon > div{
+    background-color: #c091f9;
+    color: white;
+    font-weight: bolder;
+    padding: 10px 15px;
+    cursor: pointer;
+}

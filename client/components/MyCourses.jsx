@@ -5,7 +5,26 @@ import {Edit,Delete,Publish} from '@mui/icons-material';
 export default function MyCourses({ role }) {
     const [courses, setCourses] = useState([]);
     
-    const CourseListItem = ({name, instructor, rating, price, summary, enrolledCount,thumbnail}) =>{
+    const CourseListItem = ({name, instructor, rating, price, summary, enrolledCount,thumbnail,_id}) =>{
+
+        const deleteCourse = async () => {
+            try{
+                const response = await fetch(`http://localhost:1000/mycourses/del/${_id}`,{
+                    credentials:'include'
+                });
+                const {success,message} = await response.json();
+                if(success){
+                    alert(message);
+                    window.location.href = '/mycourses';
+                }else{
+                    throw new Error(message);
+                }
+            }catch(error){
+                alert(error.message);
+                window.location.href = '/mycourses';
+            }
+        };
+        
         return (<div style={{
             display:'flex',
             height:'150px',
@@ -36,8 +55,8 @@ export default function MyCourses({ role }) {
                     display:'flex',
                     columnGap:'10px'
                 }}>
-                    <button><Edit/></button>
-                    <button><Delete/></button>
+                    <Link to={`/mycourses/build/${_id}`}><Edit/></Link>
+                    <button onClick={deleteCourse}><Delete/></button>
                     <button><Publish/></button>
                 </div>
             </div>
@@ -88,7 +107,7 @@ export default function MyCourses({ role }) {
                     height:'50px'
                 }}>+</Link>
                 <div>
-                    {courses.map((course,i) => <CourseListItem key={i} {...course}/>)}
+                    {courses.map((course,i) => <CourseListItem key={course._id} {...course}/>)}
                 </div>
             </div>}
         </div>

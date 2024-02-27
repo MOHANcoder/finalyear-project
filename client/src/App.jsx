@@ -31,6 +31,7 @@ import MyCourses from '../components/MyCourses';
 import CreateCourse from '../components/CreateCourse';
 import PageEditor from '../components/PageEditor';
 import CourseBuilder from '../components/CourseBuilder';
+import CourseEditor from '../components/CourseEditor';
 
 function App() {
 	const tools = [

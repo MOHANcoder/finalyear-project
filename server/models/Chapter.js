@@ -15,7 +15,13 @@ const ChapterSchema = new Schema({
     assessment:{
         type:ObjectId,
         ref:'Assessment'
+    },
+    module:{
+        type:ObjectId,
+        ref:'Module'
     }
+}, {
+    timestamps: true
 });
 
-model.exports = model('Chapter',ChapterSchema);
+module.exports = model('Chapter',ChapterSchema);

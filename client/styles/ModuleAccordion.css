@@ -1,0 +1,17 @@
+.module-accordion{
+    border: 1px solid;
+}
+
+.uncomplete-warn{
+    animation: a 1s;
+}
+
+@keyframes a{
+    from{
+        box-shadow: 0px 0px 4px 1px white;
+    }
+
+    to{
+        box-shadow: 0px 0px 4px 1px red;
+    }
+}

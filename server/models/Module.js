@@ -1,21 +1,25 @@
-const {Schema,model} = require("mongoose");
-const {ObjectId} = Schema.Types;
+const { Schema, model } = require("mongoose");
+const { ObjectId } = Schema.Types;
 
 const ModuleSchema = new Schema({
-    name:{
-        type:String,
-        required:true
+    name: {
+        type: String,
+        required: true
     },
-    chapters:{
-        type:[{
-            type:ObjectId,
-            ref:'Chapter'
-        }]
+    chapters: [{
+        type: ObjectId,
+        ref: 'Chapter'
+    }],
+    assessment: {
+        type: ObjectId,
+        ref: 'Assessment'
     },
-    assessment:{
-        type:ObjectId,
-        ref:'Assessment'
+    course: {
+        type: ObjectId,
+        ref: 'Course'
     }
+}, {
+    timestamps: true
 });
 
-module.exports = model('Module',ModuleSchema);
+module.exports = model('Module', ModuleSchema);

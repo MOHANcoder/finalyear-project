@@ -1,56 +1,54 @@
-const {Schema,model} = require("mongoose");
-const {ObjectId} = Schema.Types;
+const { Schema, model } = require("mongoose");
+const { ObjectId } = Schema.Types;
 
 const courseSchema = new Schema({
-    name:{
-        type:String,
-        required:true
+    name: {
+        type: String,
+        required: true
     },
-    createdBy:{
-        type:ObjectId,
-        ref:'User',
-        required:true
+    createdBy: {
+        type: ObjectId,
+        ref: 'User',
+        required: true
     },
-    thumbnail:{
-        type:String,
-        required:true
+    thumbnail: {
+        type: String,
+        required: true
     },
-    price:{
-        type:Number,
+    price: {
+        type: Number,
         // required:true
     },
-    enrolledStudents:{
-        type:[{
-            type:ObjectId,
-            ref:'User'
-        }]
-    },
-    modules:{
-        type:[{
-            type:ObjectId,
-            ref:'Module'
-        }],
+    enrolledStudents: [{
+        type: ObjectId,
+        ref: 'User'
+    }]
+    ,
+    modules: [{
+        type: ObjectId,
+        ref: 'Module',
+        required: true
+    }]
+    ,
+    forum: {
+        type: ObjectId,
+        ref: 'Forum',
         // required:true
     },
-    forum:{
-        type:ObjectId,
-        ref:'Forum',
+    summary: {
+        type: String,
+        required: true
+    },
+    overview: {
+        type: String,
         // required:true
     },
-    summary:{
-        type:String,
-        required:true
-    },
-    overview:{
-        type:String,
-        // required:true
-    },
-    tags:{
-        type:[String],
-        // required:true
-    }
-},{
-    timestamps:true
+    tags: [{
+        type: String,
+        required: true
+    }]
+}, {
+    timestamps: true
 });
 
-module.exports = model('Course',courseSchema);
+module.exports = model('Course', courseSchema);
