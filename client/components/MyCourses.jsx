@@ -1,63 +1,93 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import {Edit,Delete,Publish} from '@mui/icons-material';
+import { Edit, Delete, Publish, RemoveRedEye, Unpublished } from '@mui/icons-material';
+import useFetch from "../src/hooks/useFetch";
 
 export default function MyCourses({ role }) {
     const [courses, setCourses] = useState([]);
-    
-    const CourseListItem = ({name, instructor, rating, price, summary, enrolledCount,thumbnail,_id}) =>{
+
+    const CourseListItem = ({ name, instructor, rating, price, summary, enrolledCount, thumbnail, _id, isPublished }) => {
 
         const deleteCourse = async () => {
-            try{
-                const response = await fetch(`http://localhost:1000/mycourses/del/${_id}`,{
-                    credentials:'include'
+            try {
+                const response = await fetch(`http://localhost:1000/mycourses/course/${_id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
                 });
-                const {success,message} = await response.json();
-                if(success){
+                const { success, message } = await response.json();
+                if (success) {
                     alert(message);
                     window.location.href = '/mycourses';
-                }else{
+                } else {
                     throw new Error(message);
                 }
-            }catch(error){
+            } catch (error) {
                 alert(error.message);
                 window.location.href = '/mycourses';
             }
         };
-        
+
+
+        const handlePublish = async () => {
+            try {
+                let action = 'publish';
+                if (isPublished) {
+                    action = 'unpublish';
+                }
+                const { success, message } = await useFetch(`/mycourses/${action}/${_id}`, {}, 'PUT');
+                if (success) {
+                    alert(message);
+                    window.location.reload();
+                } else {
+                    throw new Error(message);
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+
         return (<div style={{
-            display:'flex',
-            height:'150px',
-            width:'100%',
-            columnGap:'20px',
-            marginTop:'10px',
-            padding:'10px',
-            border:'1px solid',
-            boxSizing:'border-box'
+            display: 'flex',
+            height: '150px',
+            width: '100%',
+            columnGap: '20px',
+            marginTop: '10px',
+            padding: '10px',
+            border: '1px solid',
+            boxSizing: 'border-box'
         }}>
             <div style={{
-                width:'20%',
-                minWidth:'100px',
-                height:'100%',
-                background:`url(${thumbnail ? thumbnail :'../src/assets/banner.jpg'}) center/cover no-repeat`,
+                width: '20%',
+                minWidth: '100px',
+                height: '100%',
+                background: `url(${thumbnail ? thumbnail : '../src/assets/banner.jpg'}) center/cover no-repeat`,
             }}>
 
             </div>
             <div style={{
-                width:'65%',
-                display:'flex',
-                flexDirection:'column'
+                width: '65%',
+                display: 'flex',
+                flexDirection: 'column'
             }}>
                 <div style={{
-                    width:'100%'
+                    width: '100%'
                 }}><h5>{name}</h5></div>
                 <div style={{
-                    display:'flex',
-                    columnGap:'10px'
+                    display: 'flex',
+                    columnGap: '10px'
                 }}>
-                    <Link to={`/mycourses/build/${_id}`}><Edit/></Link>
-                    <button onClick={deleteCourse}><Delete/></button>
-                    <button><Publish/></button>
+                    {role === 'instructor' ? (
+                        <>
+                            <Link to={`/mycourses/build/${_id}`}><Edit /></Link>
+                            <button onClick={deleteCourse}><Delete /></button>
+                            <button onClick={handlePublish}>{isPublished ? <Unpublished /> : <Publish />}</button>
+                        </>
+                    ) : (
+                        <>
+                            view
+                            <Link to={`/explore/view/${_id}`}><RemoveRedEye /></Link>
+                        </>
+                    )}
                 </div>
             </div>
         </div>);
@@ -95,6 +125,9 @@ export default function MyCourses({ role }) {
         <div>
             {role === "student" ? <div>
                 <h2>{courses.length} Enrolled Courses</h2>
+                <div>
+                    {courses.map((course) => <CourseListItem key={course._id} {...course} />)}
+                </div>
             </div> : <div>
                 <h2>{courses.length} Created Courses</h2>
                 <Link to="create" style={{
@@ -104,10 +137,10 @@ export default function MyCourses({ role }) {
                     borderRadius: '50%',
                     boxShadow: '0px 0px 8px 3px blueviolet',
                     textAlign: 'center',
-                    height:'50px'
+                    height: '50px'
                 }}>+</Link>
                 <div>
-                    {courses.map((course,i) => <CourseListItem key={course._id} {...course}/>)}
+                    {courses.map((course) => <CourseListItem key={course._id} {...course} />)}
                 </div>
             </div>}
         </div>

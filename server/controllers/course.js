@@ -1,6 +1,8 @@
 const Course = require('../models/Course');
 const Module = require('../models/Module');
 const Chapter = require('../models/Chapter');
+const Page = require('../models/Page');
+const User = require('../models/User');
 
 module.exports = {
     getCourseBuildDetails: async (req, res, next) => {
@@ -9,7 +11,10 @@ module.exports = {
             const course = await Course.findById(course_id).populate({
                 path: 'modules',
                 populate: {
-                    path: 'chapters'
+                    path: 'chapters',
+                    populate:{
+                        path:'pages'
+                    }
                 }
             });
             res.status(200).json({
@@ -27,67 +32,72 @@ module.exports = {
             next(error);
         }
     },
-
-    buildCourseStructure: async (req, res, next) => {
+    deleteCourse: async (req, res, next) => {
         try {
             const { course_id } = req.params;
-            const courseDetails = req.body;
-            const courseModules = [];
-
-            for (let module of courseDetails.modules) {
-                let moduleId;
-                if (module._id === undefined && !module.isRemoved) {
-                    moduleId = await Module.insertMany({ name: module.name, course: course_id });
-                    moduleId = moduleId[0]._id;
-                    courseModules.push(moduleId);
-                } else if(module._id !== undefined && !module.isRemoved){
-                    moduleId = await Module.findByIdAndUpdate(module._id, { $set: { name: module.name, course: course_id } });
-                    moduleId = moduleId._id;
-                    courseModules.push(moduleId);
-                }else{
-                    await Module.findByIdAndDelete(module._id);
-                    module.chapters.map(async ({_id}) => await Chapter.findByIdAndDelete(_id));
-                    continue;
-                }
-                
-                const newChapters = await Chapter.insertMany(
-                    module.chapters.filter(chapter => chapter._id === undefined).map(chapter => ({
-                        name: chapter.name,
-                        module: moduleId
-                    }))
-                );
-
-                const updatedChapters = [];
-
-                for(let chapter of module.chapters){
-                    if(chapter._id !== undefined && !chapter.isRemoved){
-                        await Chapter.findByIdAndUpdate(chapter._id, {
-                            $set: ({
-                                name: chapter.name,
-                                module: moduleId
-                            })
-                        })
-                        updatedChapters.push(chapter._id);
-                    }else{
-                        await Chapter.findByIdAndDelete(chapter._id);
+            const course = await Course.findById(course_id);
+            course.enrolledStudents.forEach(async (id) => {
+                await User.findByIdAndUpdate(id,{$pull:{enrolledCourses:course_id}});
+            });
+            await Course.findByIdAndDelete(course_id);
+            res.status(200).json({
+                success: true,
+                message: "Course Deleted Permenantly"
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    buildCourseStructure: async (req, res, next) => {
+        try {
+            const { id, name, thumbnail, summary, overview, modules } = req.body;
+            const insertedModules = [];
+            for (let [moduleId, module] of Object.entries(modules)) {
+                const insertedChapters = [];
+                const { name, chapters } = module;
+                if (module.isNew) {
+                    for (let [_, chapter] of Object.entries(chapters)) {
+                        const { name, pages } = chapter;
+                        const insertedPages = await Page.insertMany(Object.entries(pages).map(([_, page]) => ({ title: page.title })));
+                        const insertedChapter = await Chapter.insertMany({ name, pages: insertedPages.map(({ _id }) => _id) });
+                        insertedChapters.push(insertedChapter[0]._id);
                     }
-                }
-
-                if (newChapters.length > 0) {
-                    await Module.findByIdAndUpdate(moduleId, {
-                        $set: {
-                            chapters: newChapters.map(chapter => chapter._id)
+                    const insertedModule = await Module.insertMany({name,chapters:insertedChapters});
+                    insertedModules.push(insertedModule[0]._id);
+                } else {
+                    for (let [chapterId, chapter] of Object.entries(chapters)) {
+                        const { name, pages } = chapter;
+                        const insertedPages = [];
+                        if (chapter.isNew) {
+                            const insertedPages = await Page.insertMany(Object.entries(pages).map(([_, page]) => ({ title: page.title })));
+                            const insertedChapter = await Chapter.insertMany({ name, pages: insertedPages.map(({ _id }) => _id) });
+                            insertedChapters.push(insertedChapter[0]._id);
+                        } else {
+                            for (let [pageId, page] of Object.entries(pages)) {
+                                if (page.isNew) {
+                                    const insertedPage = await Page.insertMany({ title: page.title });
+                                    insertedPages.push(insertedPage[0]._id)
+                                }else{
+                                    await Page.findByIdAndUpdate(pageId,{$set:{title:page.title}}); 
+                                }
+                            }
+                            await Chapter.findByIdAndUpdate(chapterId,{$set:{name},$push:{pages:{$each:insertedPages}}});
                         }
-                    });
+                    }
+                    await Module.findByIdAndUpdate(moduleId,{ $set:{name},$push:{ chapters:{$each:insertedChapters}}} );
                 }
             }
-
-            await Course.findByIdAndUpdate(course_id, {
+            await Course.findByIdAndUpdate(id, {
                 $set: {
-                    summary: courseDetails.summary,
-                    overview: courseDetails.overview,
-                    name: courseDetails.name,
-                    modules: courseModules
+                    name,
+                    thumbnail,
+                    summary,
+                    overview
+                },
+                $push:{
+                    modules:{
+                        $each:insertedModules
+                    }
                 }
             });
             res.status(200).json({
@@ -95,17 +105,30 @@ module.exports = {
                 message: 'Course created successfully'
             });
         } catch (error) {
+            console.log(error);
             next(error);
         }
     },
-    deleteCourse : async (req,res,next) => {
+    publishCourse: async(req,res,next) => {
         try{
-            const {course_id} = req.params; 
-            await Course.findByIdAndDelete(course_id);
+            const {course_id} = req.params;
+            await Course.findByIdAndUpdate(course_id,{$set:{isPublished:true}});
             res.status(200).json({
                 success:true,
-                message:"Course Deleted Permenantly"
-            });
+                message:"Course Published"
+            })
+        }catch(error){
+            next(error);
+        }
+    },
+    unPublishCourse: async(req,res,next) => {
+        try{
+            const {course_id} = req.params;
+            await Course.findByIdAndUpdate(course_id,{$set:{isPublished:false}});
+            res.status(200).json({
+                success:true,
+                message:"Course Unpublished"
+            })
         }catch(error){
             next(error);
         }

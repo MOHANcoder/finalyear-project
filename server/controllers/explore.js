@@ -30,6 +30,16 @@ module.exports = {
             next(error);
         }
     },
+    getAllPublishedCourses : async (req,res,next) => {
+        try{
+            const courses = await Course.find().populate({
+                path:'createdBy'
+            });
+            res.status(200).json(courses);
+        }catch(error){
+            next(error);
+        }
+    },
     createCourse : async (req,res,next) => {
         try{
             const {name,price,thumbnail,summary} = req.body;
@@ -44,7 +54,9 @@ module.exports = {
     },
     getAllEnrolledCourses : async (req,res,next) =>{
         try{
-            const user = await User.findById(req.user.userId);
+            const user = await User.findById(req.user.userId).populate({
+                path:'enrolledCourses'
+            });
             res.status(200).json({success:true,data:user.enrolledCourses});
         }catch(error){
             next(error);
@@ -62,6 +74,19 @@ module.exports = {
         try{
             const {name,overview,modules} = req.body;
 
+        }catch(error){
+            next(error);
+        }
+    },
+    getAuthorDetails : async (req,res,next) => {
+        try{
+            const {course_id} = req.params;
+            const course = await Course.findById(course_id);
+            const author = await User.findById(course.createdBy);
+            res.status(200).json({
+                success:true,
+                author//Remove passwords
+            });
         }catch(error){
             next(error);
         }

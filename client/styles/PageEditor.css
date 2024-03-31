@@ -8,3 +8,11 @@
     padding: 10px 15px;
     cursor: pointer;
 }
+
+.editor-place-holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}

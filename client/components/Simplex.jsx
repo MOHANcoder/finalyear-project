@@ -157,9 +157,6 @@ function Simplex() {
                             }
                         </div>
                         <button className='solve-button' onClick={solve}>Solve</button>
-                        {/* {JSON.stringify(objectiveCoefficients)}
-                    {JSON.stringify(constraints)}
-                    {JSON.stringify(nonNegativeConstraints)} */}
                         <div className="answer-container" dangerouslySetInnerHTML={{ __html: answerContent }}>
 
                         </div>

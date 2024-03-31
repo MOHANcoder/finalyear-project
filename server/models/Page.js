@@ -8,7 +8,7 @@ const PageSchema = new Schema({
     },
     content:{
         type:String,
-        required:true
+        default:''
     },
     comments:[{
         type:ObjectId,

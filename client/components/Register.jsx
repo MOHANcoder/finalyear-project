@@ -65,7 +65,7 @@ export default function Register() {
                             }
                         },
                         email:(value) => {
-                            if(!value){
+                            if(!(/^[\w\-\\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(value))){
                                 return "Not a valid email address";
                             }else{
                                 return "";

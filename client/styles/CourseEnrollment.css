@@ -1,0 +1,32 @@
+.about-author{
+    box-shadow: 0px 0px 5px grey;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.profile-image{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 1px solid;
+}
+.profile-image img,.profile-image svg{
+    width: 100%;
+    height: 100%;
+}
+
+.author-img-name-container{
+    display: flex;
+    width: 100%;
+    column-gap: 20px;
+    padding: 5px;
+}
+
+.author-name{
+    font-size: x-large;
+    text-align: center;
+    line-height: 50px;
+}

@@ -31,7 +31,8 @@ import MyCourses from '../components/MyCourses';
 import CreateCourse from '../components/CreateCourse';
 import PageEditor from '../components/PageEditor';
 import CourseBuilder from '../components/CourseBuilder';
-import CourseEditor from '../components/CourseEditor';
+import CourseEnrollment from '../components/CourseEnrollment';
+import CourseView from '../components/CourseView';
 
 function App() {
 	const tools = [
@@ -115,7 +116,7 @@ function App() {
 						<Route path='login' element={<Login/>} />
 					</Route>
 				</Routes>
-			 :
+			:
 
 				<main className="main-container">
 					<Sidebar collapsed={isMobile || collapsed}>
@@ -124,7 +125,6 @@ function App() {
 								<h2>Welcome</h2>
 							</MenuItem>
 							<MenuItem icon={<ExploreIcon/>} component={<Link to='/explore' />}>Explore</MenuItem>
-							<MenuItem icon={<ExtensionIcon/>}>Puzzles</MenuItem>
 							<MenuItem className='menu2' icon={<BuildIcon />} component={<Link to="/tools" />}>Tools</MenuItem>
 							<MenuItem icon={<SchoolIcon/>} component={<Link to="/mycourses"/>}>Mycourses</MenuItem>
 							<MenuItem icon={<LogoutIcon/>} onClick={handleLogout}>Logout</MenuItem>
@@ -147,6 +147,8 @@ function App() {
 							<Route path='/mycourses/create' element={<CreateCourse/>}/>
 							<Route path='/mycourses/build/:id' element={<CourseBuilder/>} />
 							<Route path='/mycourses/edit/:id' element={<PageEditor/>} />
+							<Route path='/explore/:id' element={<CourseEnrollment/>}/>
+							<Route path='/explore/view/:id' element={<CourseView/>}/>
 						</Routes>
 					</section>
 				</main>

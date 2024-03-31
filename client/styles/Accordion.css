@@ -1,0 +1,50 @@
+.accordion{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    width: 100%;
+}
+
+.accordion-item{
+    border: 1px solid;
+}
+
+.accordion-item-title{
+    font-weight: bolder;
+    font-size: x-large;
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.accordion-item-header{
+    display: flex;
+    border: 1px solid black;
+    justify-content: space-around;
+}
+
+.accordion-item-header-options{
+    display: flex;
+    cursor: pointer;
+}
+
+.accordion-item-content{
+    padding: 0px 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.7s ease-in-out;
+}
+
+.accordion-item-content-open{
+    max-height: 400px;
+    overflow: hidden;
+    margin: 0;
+    text-align: justify;
+}
+
+.accordion-item-content-open:hover{
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}

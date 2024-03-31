@@ -52,3 +52,22 @@
     margin: 0;
     padding: 0;
 }
+
+.courseEditorSideBar{
+    transition: width 0.7s ease;
+}
+
+.side-bar-divider{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-bar-close{
+    writing-mode: vertical-rl;
+    height: max-content;
+    border: 2px solid blueviolet;
+    box-sizing: border-box;
+    padding: 10px 0px;
+    cursor: pointer;
+}

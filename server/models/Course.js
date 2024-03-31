@@ -43,6 +43,10 @@ const courseSchema = new Schema({
         type: String,
         // required:true
     },
+    isPublished:{
+        type:Boolean,
+        default:false
+    },
     tags: [{
         type: String,
         required: true

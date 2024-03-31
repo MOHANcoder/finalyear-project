@@ -1,6 +1,7 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Link } from 'react-router-dom';
 export default function CourseCard({
-    name, instructor, rating, price, summary, enrolledStudents,thumbnail
+    name, createdBy, rating, price, summary, enrolledStudents,thumbnail,_id,isAlreadyEnrolled
 }) {
     return (
         <div
@@ -77,12 +78,12 @@ export default function CourseCard({
                     {enrolledStudents.length + ' enrolled'}
                 </div>
 
-                <div style={{fontSize:'small',textAlign:'center'}} > <b>OFFERED BY </b> <a href="">{instructor}</a> </div>
+                <div style={{fontSize:'small',textAlign:'center'}} > <b>OFFERED BY </b> <a href="">{createdBy.name}</a> </div>
                 <div
                     style={{
                         textAlign: 'center'
                     }}
-                ><a href="">VIEW DETAILS</a>
+                > <Link to={isAlreadyEnrolled ? `view/${_id}` :`${_id}`}>{isAlreadyEnrolled ? "View" : "Enroll"}</Link>
                 </div>
 
 

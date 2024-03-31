@@ -1,0 +1,53 @@
+.course-view{
+    display: flex;
+    background-color: white;
+    height: 100dvh;
+    width: 100%;
+}
+
+.course-view-sidebar{
+    width: 35dvw;
+    transition: width 0.7s ease;
+}
+
+.sidebar-divider{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 5px grey;
+}
+
+.sidebar-close{
+    writing-mode: vertical-rl;
+    height: max-content;
+    /* border: 2px solid blueviolet; */
+    box-sizing: border-box;
+    padding: 10px 0px;
+    cursor: pointer;
+}
+
+.page-viewer{
+    height: 100%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding: 10px;
+    /* box-shadow: -2px -2px grey,2px 2px grey; */
+    width: 70dvw;
+    /* margin-left: 10%; */
+}
+
+.page-viewer-title{
+    font-size: xx-large;
+    text-align: center;
+}
+
+.page-viewer-content{
+    width: 100%;
+    border: 1px solid;
+    border-radius: 10px;
+    overflow: scroll;
+}
+
+.accordion-item-title{
+    font-size: large;
+}

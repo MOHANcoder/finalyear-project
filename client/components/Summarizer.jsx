@@ -14,7 +14,7 @@ export default function Summarizer() {
         setModelInvoked(true);
         try {
             const { summary_text } = await hf.summarization({
-                model: 'facebook/bart-large-cnn',
+                model: 'Falconsai/text_summarization',//facebook/bart-large-cnn
                 inputs: text
             });
             let len = 0;

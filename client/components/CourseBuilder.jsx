@@ -1,52 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ReactQuill from "react-quill";
-import ModuleAccordion from "./ModuleAccordion";
-import { Add } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    fetchCourse,
+    courseNameChanged,
+    courseSummaryChanged,
+    courseOverviewChanged,
+    saveToCloud
+} from '../src/features/course/courseSlice.js';
+import Loader from './Loader.jsx';
+import AlertBox from './AlertBox.jsx';
 
 export default function CourseBuilder() {
 
     const { id } = useParams();
-    const [name, setName] = useState('');
-    const [courseSummary, setCourseSummary] = useState('');
-    const [courseOverview, setCourseOverview] = useState('');
-    const [modules, setModules] = useState([]);
-
-    const fetchCourseBuildDetails = async () => {
-        try {
-            const response = await fetch(`http://localhost:1000/mycourses/build/${id}`, {
-                credentials: 'include'
-            });
-            const { success, data } = await response.json();
-            if (success) {
-                setName(data.name);
-                setCourseSummary(data.summary);
-                setCourseOverview(data.overview);
-                if (data.modules.length !== 0) {
-                    setModules(data.modules.map(module => ({
-                        name: module.name,
-                        id: module._id,
-                        chapters: module.chapters.map(chapter => ({
-                            chapter: chapter.name,
-                            editable: false,
-                            id: chapter._id,
-                            isRemoved: false
-                        })),
-                        isRemoved: false
-                    })));
-                }
-            } else {
-                throw new Error('Course Not found');
-            }
-        } catch (error) {
-            alert(error.message);
-            window.location.href = 'http://localhost:5173/mycourses/';
-        }
-    }
+    const dispatch = useDispatch();
+    const dataStatus = useSelector(state => state.course.status);
+    const courseName = useSelector(state => state.course.data.name);
+    const courseSummary = useSelector(state => state.course.data.summary);
+    const courseOverview = useSelector(state => state.course.data.overview);
+    const courseActionMessage = useSelector(state => state.course.message);
 
     useEffect(() => {
-        fetchCourseBuildDetails();
-    }, []);
+        dispatch(fetchCourse({id}));
+    },[]);
+
+    useEffect(() => {
+        if (dataStatus == 'idle') {
+            dispatch(fetchCourse({id}));
+        }
+    }, [dispatch, dataStatus, id]);
 
     const inputFieldStyles = {
         // height: '70%',
@@ -64,29 +48,14 @@ export default function CourseBuilder() {
         width: '100%'
     };
 
-    const addModule = () => {
-        setModules((pre) => [...pre, { name: "new Module" + pre.length, chapters: [], isRemoved: false }]);
+    const saveToDB = () => {
+        dispatch(saveToCloud());
+        window.location.href = `http://localhost:5173/mycourses/edit/${id}`;
     };
 
-    const removeModule = (id) => {
-        setModules((pre) => {
-            if(pre[id].id === undefined){
-                return [...pre.slice(0,id),...pre.slice(id+1)];
-            }
-            const copiedArray = [...pre];
-            copiedArray[id]['isRemoved'] = true;
-            return copiedArray;
-        });
-    };
-
-    const updateModule = (id, module) => {
-        setModules((pre) => {
-            const copiedArray = [...pre];
-            copiedArray[id].name = module.name;
-            copiedArray[id].chapters = module.chapters;
-            return copiedArray;
-        });
-    };
+    if (dataStatus !== 'succeeded') {
+        return <Loader />;
+    }
 
     return (
         <div
@@ -102,19 +71,24 @@ export default function CourseBuilder() {
                 // justifyContent:'space-evenly'
             }}
         >
+            {courseActionMessage !== null && courseActionMessage.message !== null 
+            && <AlertBox 
+            message={courseActionMessage.message} 
+            type={courseActionMessage.success?'success':'failed'}/>}
             <div style={divStyles}>
                 <label>Course Name : </label>
-                <input type="text" name="name" style={inputFieldStyles} value={name} onChange={setName} />
+                <input type="text" name="name" style={inputFieldStyles} value={courseName}
+                    onChange={(e) => dispatch(courseNameChanged(e.target.value))} />
             </div>
 
             <div style={divStyles}>
                 <label>Course Summary : </label>
                 <br />
-                <textarea style={inputFieldStyles} rows="4" onChange={
-                    (e) => {
-                        setCourseSummary(e.target.value);
-                    }
-                } value={courseSummary}></textarea>
+                <textarea style={inputFieldStyles} rows="4"
+                    value={courseSummary}
+                    onChange={
+                        (e) => dispatch(courseSummaryChanged(e.target.value))
+                    }></textarea>
             </div>
 
             <div style={{ ...divStyles }}>
@@ -122,66 +96,11 @@ export default function CourseBuilder() {
                 <ReactQuill placeholder="Everything about your course...Overview of the course..." style={{
                     ...inputFieldStyles,
                     width: '100%'
-                }} value={courseOverview} onChange={setCourseOverview} />
+                }} value={courseOverview}
+                onChange={(value) => dispatch(courseOverviewChanged(value))} />
             </div>
 
-            <div style={divStyles}>
-                Click + to add a new Module :
-                <div style={{
-                    cursor: 'pointer',
-                    boxShadow: '0px 0px 2px 1px grey',
-                    margin: '10px 0px',
-                    width: 'max-content'
-                }} onClick={addModule}><Add /></div>
-                {modules.map((m, i) => m.isRemoved ? '' : <ModuleAccordion key={m.id ?? m.name + Date.now()} warn={false} name={m.name} editable={false} chapters={m.chapters}
-                    detailsStyle={inputFieldStyles}
-                    removeModule={removeModule}
-                    updateModule={updateModule}
-                    id={i}
-                />)}
-            </div>
-
-            <button onClick={
-                async () => {
-                    const data = {
-                        name,
-                        summary: courseSummary,
-                        overview: courseOverview,
-                        modules: modules.map(module => ({
-                            name: module.name,
-                            _id: module.id,
-                            isRemoved: module.isRemoved,
-                            chapters: module.chapters.map((
-                                { chapter, id, isRemoved }) => ({
-                                    name: chapter,
-                                    _id: id,
-                                    isRemoved
-                                }
-                            ))
-                        }))
-                    };
-
-                    try {
-                        const response = await fetch(`http://localhost:1000/mycourses/build/${id}`, {
-                            method: 'POST',
-                            credentials: 'include',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        });
-
-                        const { success, message } = await response.json();
-                        if (success) {
-                            alert(message);
-                            window.location.href = `http://localhost:5173/mycourses/edit/${id}`;
-                        }
-                    } catch (error) {
-                        alert("some error occurred.");
-                        window.location.reload();
-                    }
-                }
-            }>gO NExT</button>
+            <button onClick={saveToDB}>Go Next</button>
         </div>
     );
 }

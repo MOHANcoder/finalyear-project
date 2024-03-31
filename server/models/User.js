@@ -19,22 +19,27 @@ const UserSchema = new Schema({
         required:true,
         enum:['student','instructor','admin']
     },
-    enrolledCourses:[{
-        course : {
+    enrolledCourses:[
+        {
             type:Schema.Types.ObjectId,
             ref:'Course'
-        },
-        lastViewed: {
-            module:{
-                type:Schema.Types.ObjectId,
-                ref:'Module'
-            },
-            chapter:{
-                type:Schema.Types.ObjectId,
-                ref:'Chapter'
-            }
         }
-    }
+    //     {
+    //     course : {
+    //         type:Schema.Types.ObjectId,
+    //         ref:'Course'
+    //     },
+    //     lastViewed: {
+    //         module:{
+    //             type:Schema.Types.ObjectId,
+    //             ref:'Module'
+    //         },
+    //         chapter:{
+    //             type:Schema.Types.ObjectId,
+    //             ref:'Chapter'
+    //         }
+    //     }
+    // }
     ],
     createdCourses:[
         {
