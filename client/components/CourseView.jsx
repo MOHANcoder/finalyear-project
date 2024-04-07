@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import useFetch from "../src/hooks/useFetch";
 import AccordionItem from "./AccordionItem";
+import {useMediaQuery} from "react-responsive";
 import '../styles/CourseView.css';
 
 export default function CourseView() {
@@ -11,6 +12,7 @@ export default function CourseView() {
     const [chapter, setChapter] = useState(-1);
     const [page, setpage] = useState(-1);
     const [isSideBarClosed,setIsSideBarClosed] = useState(false);
+    const isMobile = useMediaQuery({ maxWidth: 768 });
 
     const fetchCourseDetails = async () => {
         const courseDetails = await useFetch(`/explore/${id}`);
@@ -22,13 +24,8 @@ export default function CourseView() {
     },[]);
 
     return (
-        <section className="course-view">
-            <div className={`course-view-sidebar`}
-                style={{
-                    width:isSideBarClosed ? '0dvh' :'35dvh',
-                    zIndex:isSideBarClosed ? -1 : 0
-                }}
-            >
+        <section className={`course-view ${isMobile ? 'course-view-mobile' : ''} ${isSideBarClosed ? 'closed' : ''}`}>
+            <div className={`course-view-sidebar ${isMobile ? 'course-view-sidebar-mobile' : ''}`}>
                 {Object.keys(state).length !== 0 && state.modules.map((module, i) =>
                     <AccordionItem
                         title={module.name}
@@ -59,6 +56,7 @@ export default function CourseView() {
                         }
                     />
                 )}
+                <div className="forum"><h4><Link to={`/explore/forum/${id}`}>Discussion Forum</Link></h4></div>
             </div>
             <div className="sidebar-divider">
                 <div className="sidebar-close" onClick={() => setIsSideBarClosed(!isSideBarClosed)}>

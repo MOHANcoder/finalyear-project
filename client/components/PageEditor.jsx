@@ -8,6 +8,7 @@ import { fetchPage, pageContentUpdated } from '../src/features/page/pageSlice';
 import Loader from './Loader';
 import { saveToCloud } from '../src/features/page/pageSlice';
 import AlertBox from './AlertBox';
+import {useMediaQuery} from 'react-responsive';
 
 export default function PageEditor() {
 
@@ -31,6 +32,7 @@ export default function PageEditor() {
     const page = useSelector(state => state.page.data);
     const course = useSelector(state => state.course.data);
     const pageActionMessage = useSelector(state => state.page.message);
+    const isMobile = useMediaQuery({ maxWidth: 768 });
 
     useEffect(() => {
         if (dataStatus == 'idle') {
@@ -41,16 +43,10 @@ export default function PageEditor() {
     }, [dispatch, dataStatus]);
 
     return (
-        <div style={{
-            display: 'flex'
-        }}>
+        <div className={`page-editor ${isMobile ? 'mobile' : ''}`}>
             <CourseEditorSideBar />
             {dataStatus === 'succeeded' ?
-                <div style={{
-                    height: '94dvh',
-                    width: '100%',
-                    backgroundColor: 'white'
-                }}>
+                <div className={`editor-container`}>
                     {pageActionMessage !== null && pageActionMessage.message !== null
                     && <AlertBox
                         message={pageActionMessage.message}
@@ -63,7 +59,7 @@ export default function PageEditor() {
                         border: '1px solid'
                     }}>
                         <ReactQuill style={{
-                            height: '90%'
+                            height: '85%'
                         }} modules={modules}
                             theme="snow"
                             value={page.content}

@@ -16,3 +16,20 @@
     text-align: center;
     width: 100%;
 }
+
+.page-editor{
+    display: flex;
+    height: 100%;
+}
+
+.page-editor.mobile{
+    flex-direction: column;
+}
+
+.page-editor .page-title{
+    width: 100%;
+}
+
+.editor-container{
+    height: 95dvh;
+}

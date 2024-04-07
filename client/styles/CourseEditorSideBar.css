@@ -1,30 +1,4 @@
-.chapter-options-container{
-    width: 100%;
-}
-.chapter-options-container > div {
-    width: 100%;
-    box-sizing: border-box;
-    padding-left: 10px;
-}
-
-.chapter-options-container > div :hover{
-    color: orange;
-}
-
-.page-list-item-options > div :hover{
-    color: orange;
-}
-
-.page-list{
-        
-}
-
-.page-list-item{
-    display: flex;
-    height: 50px;
-}
-
-.page-list-item-options{
+.page-list-item-options {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -35,7 +9,7 @@
     align-items: center;
 }
 
-.page-title{
+.page-title {
     width: 100%;
     box-shadow: 0px 0px 1px 1px black;
     margin-top: 5px;
@@ -44,30 +18,57 @@
     /* line-height: 40px; */
 }
 
-.page-title input{
+.page-title input {
     width: 100%;
-    height:100%;
+    height: 100%;
     outline: none;
     border: none;
     margin: 0;
     padding: 0;
 }
 
-.courseEditorSideBar{
+.courseEditorSideBar {
     transition: width 0.7s ease;
 }
 
-.side-bar-divider{
+.side-bar-divider {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.side-bar-close{
+.side-bar-divider.mobile .side-bar-close{
+    writing-mode: horizontal-tb;
+    padding: 0px 10px;
+}
+
+.side-bar-close {
     writing-mode: vertical-rl;
     height: max-content;
     border: 2px solid blueviolet;
     box-sizing: border-box;
     padding: 10px 0px;
     cursor: pointer;
+}
+
+.courseEditorSideBar {
+    width: 40dvw;
+    overflow-y: scroll;
+    padding: 5px;
+}
+
+.courseEditorSideBar .accordion-item{
+    width: 100%;
+}
+
+.courseEditorSideBar.mobile{
+    width: 100%;
+}
+
+.courseEditorSideBar.closed{
+    width: 0dvw;
+}
+
+.course-editor-sidebar-mobile-closed{
+    height: 0dvh;
 }

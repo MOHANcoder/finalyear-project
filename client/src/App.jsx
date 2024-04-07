@@ -10,7 +10,6 @@ import Tools from '../components/Tools'
 import Ocr from '../components/Ocr';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import { Sidebar, Menu, MenuItem ,} from "react-pro-sidebar";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import BuildIcon from '@mui/icons-material/Build';
 import BookIcon from '@mui/icons-material/Book';
@@ -33,6 +32,9 @@ import PageEditor from '../components/PageEditor';
 import CourseBuilder from '../components/CourseBuilder';
 import CourseEnrollment from '../components/CourseEnrollment';
 import CourseView from '../components/CourseView';
+import NavigationBar, { Menu } from '../components/NavigationBar';
+import { AccountCircle, Extension } from '@mui/icons-material';
+import Forum from '../components/Forum';
 
 function App() {
 	const tools = [
@@ -77,49 +79,61 @@ function App() {
 	]
 	const [collapsed, setCollapsed] = useState(false);
 	const isMobile = useMediaQuery({ maxWidth: 768 });
-	const [isAuthenticated,setIsAuthenticated] = useState(false);
-	const [userRole,setUserRole] = useState('');
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [userRole, setUserRole] = useState('');
 
-	useEffect(()=>{
-		const token = document.cookie.split(";").find( cookie => cookie.startsWith("token="));
-		if(token !== undefined){
-			const payload = JSON.parse(atob((token.split('.')[1]).replace('-','+').replace('_','/')));
-			if(payload){
+	useEffect(() => {
+		const token = document.cookie.split(";").find(cookie => cookie.startsWith("token="));
+		if (token !== undefined) {
+			const payload = JSON.parse(atob((token.split('.')[1]).replace('-', '+').replace('_', '/')));
+			if (payload) {
 				setUserRole(payload['role']);
 			}
 			setIsAuthenticated(true);
-		}else{
+		} else {
 			setIsAuthenticated(false);
 		}
-	},[]);
+	}, []);
 
 	const handleLogout = async () => {
-		try{
-			await fetch('http://localhost:1000/logout',{
-				method:'GET',
-				credentials:'include'
+		try {
+			await fetch('http://localhost:1000/logout', {
+				method: 'GET',
+				credentials: 'include'
 			});
 			window.location.href = "/";
 			// window.location.reload();
-		}catch(error){
-			console.log('Logout Failed',error.message);
+		} catch (error) {
+			console.log('Logout Failed', error.message);
 		}
 	}
 
 	return (
 		<BrowserRouter>
-			{ !isAuthenticated? 
+			{!isAuthenticated ?
 				<Routes>
 					<Route path='/'>
-						<Route index element={<Home/>}/>
-						<Route path='register' element={<Register/>} />
-						<Route path='login' element={<Login/>} />
+						<Route index element={<Home />} />
+						<Route path='register' element={<Register />} />
+						<Route path='login' element={<Login />} />
 					</Route>
 				</Routes>
-			:
-
-				<main className="main-container">
-					<Sidebar collapsed={isMobile || collapsed}>
+				:
+				<>
+					<NavigationBar title={"Welcome"} collapsed={isMobile || collapsed} isBottomBar={isMobile} onClick={() => setCollapsed(!collapsed)}>
+						{
+							userRole === 'student' &&
+							<Menu icon={<ExploreIcon />} content={"Explore"} link={'/explore'} />
+						}
+						<Menu icon={<BuildIcon/>} content={"Tools"} link={'/tools'}/>
+						<Menu icon={<SchoolIcon/>} content={"MyCourses"} link={"/mycourses"}/>
+						<Menu icon={<AccountCircle/>} content={"Profile"} link={'/'} />
+						<Menu icon={<LogoutIcon/>} content={"Logout"} link={"/logout"} isFooter={true} onClick={handleLogout} />
+					</NavigationBar>
+					<main className={`main-container ${isMobile ? 'mobile' : ''}`} style={{
+						width:isMobile ? '100dvw' : collapsed ? '95dvw' : '74dvw'
+					}}>
+						{/* <Sidebar collapsed={isMobile || collapsed}>
 						<Menu>
 							<MenuItem className='menu1' icon={<MenuRoundedIcon/>} onClick={() => setCollapsed(!collapsed)}>
 								<h2>Welcome</h2>
@@ -129,29 +143,31 @@ function App() {
 							<MenuItem icon={<SchoolIcon/>} component={<Link to="/mycourses"/>}>Mycourses</MenuItem>
 							<MenuItem icon={<LogoutIcon/>} onClick={handleLogout}>Logout</MenuItem>
 						</Menu>
-					</Sidebar>
-					<section className="main-content">
-						<Routes>
-							<Route path='/' element={userRole}/>
-							<Route path='/tools' element={<Tools tools={tools} />} />
-							<Route path='/tools/ocr' element={<Ocr />} />
-							<Route path='/tools/ocr/image' element={<Ocr />} />
-							<Route path='/tools/calculators' element={<Tools tools={calculators} />} />
-							<Route path='/tools/calculators/assignment' element={<Assignment />} />
-							<Route path='/tools/calculators/transportation' element={<Transportation />} />
-							<Route path='/tools/calculators/simplex' element={<Simplex />} />
-							<Route path='/tools/dictionary' element={<Dictionary />} />
-							<Route path='/tools/summarizer' element={<Summarizer />} />
-							<Route path='/explore' element={<Explore/>} />
-							<Route path='/mycourses' element={<MyCourses role={userRole}/>}/>
-							<Route path='/mycourses/create' element={<CreateCourse/>}/>
-							<Route path='/mycourses/build/:id' element={<CourseBuilder/>} />
-							<Route path='/mycourses/edit/:id' element={<PageEditor/>} />
-							<Route path='/explore/:id' element={<CourseEnrollment/>}/>
-							<Route path='/explore/view/:id' element={<CourseView/>}/>
-						</Routes>
-					</section>
-				</main>
+					</Sidebar> */}
+						<section className="main-content">
+							<Routes>
+								<Route path='/' element={userRole} />
+								<Route path='/tools' element={<Tools tools={tools} />} />
+								<Route path='/tools/ocr' element={<Ocr />} />
+								<Route path='/tools/ocr/image' element={<Ocr />} />
+								<Route path='/tools/calculators' element={<Tools tools={calculators} />} />
+								<Route path='/tools/calculators/assignment' element={<Assignment />} />
+								<Route path='/tools/calculators/transportation' element={<Transportation />} />
+								<Route path='/tools/calculators/simplex' element={<Simplex />} />
+								<Route path='/tools/dictionary' element={<Dictionary />} />
+								<Route path='/tools/summarizer' element={<Summarizer />} />
+								{userRole === 'student' && <Route path='/explore' element={<Explore />} />}
+								<Route path='/mycourses' element={<MyCourses role={userRole} />} />
+								<Route path='/mycourses/create' element={<CreateCourse />} />
+								<Route path='/mycourses/build/:id' element={<CourseBuilder />} />
+								<Route path='/mycourses/edit/:id' element={<PageEditor />} />
+								<Route path='/explore/:id' element={<CourseEnrollment />} />
+								<Route path='/explore/view/:id' element={<CourseView />} />
+								<Route path='/explore/forum/:id' element={<Forum/>}/>
+							</Routes>
+						</section>
+					</main>
+				</>
 			}
 		</BrowserRouter>
 	)

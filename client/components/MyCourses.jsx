@@ -124,12 +124,16 @@ export default function MyCourses({ role }) {
     return (
         <div>
             {role === "student" ? <div>
-                <h2>{courses.length} Enrolled Courses</h2>
+                <div>
+                    <h2>{courses.length} Enrolled Courses</h2>
+                </div>
                 <div>
                     {courses.map((course) => <CourseListItem key={course._id} {...course} />)}
                 </div>
             </div> : <div>
-                <h2>{courses.length} Created Courses</h2>
+                <div>
+                    <h2>{courses.length} Created Courses</h2>
+                </div>
                 <Link to="create" style={{
                     fontSize: 'xx-large',
                     display: 'block',

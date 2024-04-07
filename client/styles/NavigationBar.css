@@ -1,26 +1,37 @@
-.navbar{
-    height: 100%;
-    width: 300px;
+.navbar {
+    height: 100dvh;
+    width: 26dvw;
     cursor: pointer;
-    word-break: break-all;
-    position: fixed;
-    z-index: 1;
     transition: width 0.7s ease;
-    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background-color: blueviolet;
 }
 
-.navbar-bottom-bar{
+.navbar:last-child {
+    flex-grow: 1;
+    margin-top: auto;
+    align-self: flex-end;
+}
+
+.navbar-bottom-bar {
+    position: fixed;
     bottom: 0;
     height: 70px;
     display: flex;
     width: 100%;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px -8px white;
 }
 
-.navbar-only-collapsed{
-    width: 50px;
+.navbar-only-collapsed {
+    width: 5dvw;
+    overflow: hidden;
 }
 
-.navbar-header{
+.navbar-header {
     display: flex;
     align-items: center;
     column-gap: 1rem;
@@ -28,49 +39,66 @@
     padding: 10px;
 }
 
-.navbar-heading{
+.navbar-only-collapsed .navbar-header {
+    justify-content: center;
+}
+
+.navbar-only-collapsed .icon-menu {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-heading {
     font-size: 2rem;
 }
 
-.icon-menu-link{
+.icon-menu-link {
     color: black;
     text-decoration: none;
     display: flex;
     column-gap: 15px;
-    font-size: x-large;
+    font-size: 1.2rem;
 }
 
-.icon-menu-icon svg{
+.icon-menu-icon svg {
     font-size: larger;
     position: relative;
     top: 20%;
 }
 
-.icon-menu{
+.icon-menu {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
 }
 
-.menu-icon svg{
+.menu-icon svg {
     font-size: 2rem;
 }
 
-.links-section-bottom-bar{
+.links-section {
     display: flex;
-    justify-content: space-around;
-    width: 100%;
+    flex-direction: column;
+    height: 100%;
 }
 
-.icon-menu-bottom-bar{
-    display: flex;
+.links-section-bottom-bar {
+    flex-direction: row;
+    /* justify-content: center; */
+    column-gap: 10px;
 }
 
-.icon-menu-link-bottom-bar{
+.icon-menu-bottom-bar {
+    display: flex;
+    height: 100%;
+    width: 4rem;
+    z-index: 1;
+}
+
+.icon-menu-link-bottom-bar {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     row-gap: 0px;
@@ -80,6 +108,90 @@
     filter: drop-shadow(10); */
 }
 
-.icon-menu-link-bottom-bar svg{
-    font-size: 2.5rem;
+.icon-menu-link-bottom-bar svg {
+    font-size: 2rem;
+}
+
+.footer-menu {
+    margin-top: auto;
+}
+
+.icon-menu-bottom-bar .icon-menu-icon {
+    transition: 0.7s;
+}
+
+.icon-menu-bottom-bar .icon-menu-content {
+    font-size: 0.85rem;
+    transition: 0.7s;
+    opacity: 0;
+}
+
+.icon-menu-bottom-bar.active .icon-menu-content {
+    opacity: 1;
+    transform: translateY(-40%);
+}
+
+.icon-menu-bottom-bar.active .icon-menu-icon {
+    transform: translateY(-60%);
+}
+
+.navbar .menu-indicator {
+    display: none;
+}
+
+.navbar-bottom-bar .menu-indicator {
+    display: block;
+    position: absolute;
+    top: -40%;
+    background-color: aqua;
+    height: 100%;
+    width: 70px;
+    border-radius: 50%;
+    border: 5px solid white;
+    transition: 0.5s;
+    box-sizing: border-box;
+}
+
+.navbar-bottom-bar .icon-menu-bottom-bar:nth-child(1).active~.menu-indicator {
+    transform: translateX(calc(70px * 0 - 2px));
+}
+
+.navbar-bottom-bar .icon-menu-bottom-bar:nth-child(2).active~.menu-indicator {
+    transform: translateX(calc(70px * 1));
+}
+
+.navbar-bottom-bar .icon-menu-bottom-bar:nth-child(3).active~.menu-indicator {
+    transform: translateX(calc(70px * 2 + 5px));
+}
+
+.navbar-bottom-bar .icon-menu-bottom-bar:nth-child(4).active~.menu-indicator {
+    transform: translateX(calc(70px * 3 + 5px));
+}
+
+.navbar-bottom-bar .icon-menu-bottom-bar:nth-child(5).active~.menu-indicator {
+    transform: translateX(calc(70px * 4 + 10px));
+}
+
+.menu-indicator::before {
+    content: "";
+    position: absolute;
+    top: 38%;
+    left: -1.45rem;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-right-radius: 19px;
+    box-shadow: 3px -8px 0 0 rgba(255, 255, 255, 1);
+}
+
+.menu-indicator::after {
+    content: "";
+    position: absolute;
+    top: 38%;
+    right: -1.45rem;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-left-radius: 19px;
+    box-shadow: -3px -8px 0 0 white;
 }

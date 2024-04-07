@@ -7,7 +7,8 @@
 
 .course-view-sidebar{
     width: 35dvw;
-    transition: width 0.7s ease;
+    transition: all 0.7s ease;
+    cursor: pointer;
 }
 
 .sidebar-divider{
@@ -26,13 +27,17 @@
     cursor: pointer;
 }
 
+.course-view-mobile .sidebar-close{
+    writing-mode: horizontal-tb;
+}
+
 .page-viewer{
     height: 100%;
     overflow-y: scroll;
     box-sizing: border-box;
     padding: 10px;
     /* box-shadow: -2px -2px grey,2px 2px grey; */
-    width: 70dvw;
+    width: 100%;
     /* margin-left: 10%; */
 }
 
@@ -50,4 +55,44 @@
 
 .accordion-item-title{
     font-size: large;
+}
+
+.course-view.closed .course-view-sidebar{
+    width: 0dvw;
+    z-index: -1;
+}
+
+.course-view-mobile{
+    flex-direction: column;
+}
+
+.course-view-mobile.closed .course-view-sidebar{
+    width: 0vw;
+    height: 0vh;
+}
+
+.course-view-sidebar-mobile{
+    width: 100%;
+}
+
+.course-view .course-view-content{
+    flex: 1;
+}
+
+.course-view-mobile .course-view-content{
+    width: 100%;
+}
+
+.page-viewer img{
+    width: 100%;
+}
+
+.course-view-sidebar .accordion-item{
+    width: 100%;
+}
+
+.forum h4{
+    margin: 5px;
+    text-align: center;
+    font-style: italic;
 }

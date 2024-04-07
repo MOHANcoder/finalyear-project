@@ -8,9 +8,10 @@ export default function Register() {
         width: '100%',
         padding: '0 20px',
         margin: 0,
-        border: 'none',
+        border: '1px solid',
         boxSizing:'border-box',
-        fontSize:'large'
+        fontSize:'large',
+        borderRadius:'5px'
     };
 
     const submitButtonStyles = {

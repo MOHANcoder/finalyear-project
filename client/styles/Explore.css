@@ -1,8 +1,19 @@
+.explore{
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.explore-title{
+    margin: 0;
+    font-size: xx-large;
+    text-align: center;
+}
+
 .search-bar{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20dvh;
+    height: 15dvh;
 }
 
 .search-bar input{
@@ -13,6 +24,10 @@
     box-shadow: 2px 2px 5px grey;
     border-radius: 5px;
     font-size: large;
+}
+
+.explore-mobile .search-bar input{
+    min-width: 90dvw;
 }
 
 .search-bar span{

@@ -8,9 +8,10 @@ export default function Login() {
         width: '100%',
         padding: '0 20px',
         margin: 0,
-        border: 'none',
+        border: '1px solid',
         boxSizing:'border-box',
-        fontSize:'large'
+        fontSize:'large',
+        borderRadius:'5px'
     };
 
     const submitButtonStyles = {
@@ -65,7 +66,7 @@ export default function Login() {
                             }
                         },
                         email:(value) => {
-                            if(!value){
+                            if(!(/^[\w\-\\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(value))){
                                 return "Not a valid email address";
                             }else{
                                 return "";

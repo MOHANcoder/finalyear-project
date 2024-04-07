@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import ReactQuill from "react-quill";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchCourse,
@@ -21,6 +21,7 @@ export default function CourseBuilder() {
     const courseSummary = useSelector(state => state.course.data.summary);
     const courseOverview = useSelector(state => state.course.data.overview);
     const courseActionMessage = useSelector(state => state.course.message);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchCourse({id}));
@@ -50,7 +51,7 @@ export default function CourseBuilder() {
 
     const saveToDB = () => {
         dispatch(saveToCloud());
-        window.location.href = `http://localhost:5173/mycourses/edit/${id}`;
+        navigate(`../mycourses/edit/${id}`);
     };
 
     if (dataStatus !== 'succeeded') {

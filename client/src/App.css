@@ -41,13 +41,25 @@
   color: #888;
 } */
 
-
-.main-container{
-	display: flex;
-	gap: 10px;
-	height:100dvh;
+.main-container {
+	overflow-y: scroll;
+	transition: all 0.7s ease;
+	padding: 5px;
+	box-sizing: border-box;
 }
 
-.main-content{
-	flex: 1;
+.main-container.mobile{
+  height: calc(100dvh - 100px);
+}
+
+body::-webkit-scrollbar {
+	width: 0.30rem;
+}
+
+body::-webkit-scrollbar-track {
+	background: #1e1e24;
+}
+
+body::-webkit-scrollbar-thumb {
+	background: #6649b8;
 }

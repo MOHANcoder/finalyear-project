@@ -11,6 +11,8 @@ const { createPage, deletePage, getPage, updatePageContent } = require("./contro
 const {deleteChapter} = require('./controllers/chapter');
 const {deleteModule} = require('./controllers/module');
 const {enroll} = require('./controllers/user');
+const { postMessage } = require("./controllers/chat");
+const { fetchForumData } = require("./controllers/forum");
 
 require("dotenv").config();
 connectDB();
@@ -45,6 +47,8 @@ app.get('/explore/author/:course_id',authenticate,getAuthorDetails);
 app.get('/enroll/:course_id',authenticate,enroll);
 app.put('/mycourses/publish/:course_id',authenticate,authorize(['instructor']),publishCourse);
 app.put('/mycourses/unpublish/:course_id',authenticate,authorize(['instructor']),unPublishCourse);
+app.post('/forum/:forumId',authenticate,postMessage);
+app.get('/forum/:course_id',authenticate,fetchForumData);
 
 app.use("*", (req, res) => {
     return res.status(404).send("<html><head><title>404</title></head><body><h1>Page Not Found</h1></body></html>");
