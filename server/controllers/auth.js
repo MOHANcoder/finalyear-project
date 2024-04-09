@@ -17,7 +17,7 @@ module.exports = {
             const hash = await bcrpyt.hash(password, salt);
             const user = new User({ name, email, password: hash, role });
             await user.save();
-            res.status(200).json({ message: "User registered successfully." });
+            res.status(200).json({ success:true,message: "User registered successfully." });
         } catch (error) {
             next(error);
         }

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import useFetch from '../src/hooks/useFetch';
+import {useNavigate} from 'react-router-dom';
 
 export default function Register() {
     const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -28,6 +30,7 @@ export default function Register() {
     };
 
     const [helperText,setHelperText] = useState({name:'',email:'',password:''});
+    const navigate = useNavigate();
 
     return (
         <div style={{
@@ -87,7 +90,28 @@ export default function Register() {
                 }}
                 
                 method='post'
-                action='http://localhost:1000/register'
+
+                onSubmit={async (e) => {
+                    e.preventDefault();
+                    try{
+                        const {success,message,error} = await useFetch('/register',{
+                            name:e.target.name.value,
+                            email:e.target.email.value,
+                            password:e.target.password.value,
+                            role:e.target.role.value
+                        },"POST");
+                        if(success){
+                            alert('Registration Successful');
+                            navigate('/login');
+                            navigate(0);
+                        }else{
+                            throw new Error(error.message);
+                        }
+                    }catch(error){
+                        alert(error.message);
+                        navigate(0);
+                    }
+                }}
             >
                 <div><h1>REGISTER</h1></div>
                 <div style={divStyles}>

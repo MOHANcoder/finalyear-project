@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../styles/Simplex.css';
 import Constraint from './Constraint';
+import useFetch from '../src/hooks/useFetch';
 
 function Simplex() {
 
@@ -35,33 +36,26 @@ function Simplex() {
 
     const solve = async () => {
         try {
-            const res = await fetch("http://localhost:1000/tools/calc/or/simplex", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    noOfDecisionVariables: decisionVars,
-                    optimizeType,
-                    objectiveCoefficients: objectiveCoefficients.map(coefficient => ({ dividend: coefficient, divisor: 1 })),
-                    constraints: constraints.map((constraint) => ({
-                        coefficient: constraint.coefficient.map(coefficient => ({ dividend: coefficient, divisor: 1 })),
-                        symbol: constraint.symbol,
-                        constant: { dividend: constraint.constant, divisor: 1 }
-                    })),
-                    nonNegativeConstraints: nonNegativeConstraints.map((constraint, i) => ({
-                        coefficient: Array.from({ length: decisionVars }, (_, j) => {
-                            if (i === j) {
-                                return { dividend: 1, divisor: 1 };
-                            }
-                            return { dividend: 0, dividsor: 1 };
-                        }),
-                        symbol: constraint.symbol,
-                        constant: { dividend: constraint.constant, dividsor: 1 }
-                    }))
-                })
-            });
-            const { data: { htmlContent } } = await res.json();
+            const { data: { htmlContent } } = await useFetch("/tools/calc/or/simplex", {
+                noOfDecisionVariables: decisionVars,
+                optimizeType,
+                objectiveCoefficients: objectiveCoefficients.map(coefficient => ({ dividend: coefficient, divisor: 1 })),
+                constraints: constraints.map((constraint) => ({
+                    coefficient: constraint.coefficient.map(coefficient => ({ dividend: coefficient, divisor: 1 })),
+                    symbol: constraint.symbol,
+                    constant: { dividend: constraint.constant, divisor: 1 }
+                })),
+                nonNegativeConstraints: nonNegativeConstraints.map((constraint, i) => ({
+                    coefficient: Array.from({ length: decisionVars }, (_, j) => {
+                        if (i === j) {
+                            return { dividend: 1, divisor: 1 };
+                        }
+                        return { dividend: 0, dividsor: 1 };
+                    }),
+                    symbol: constraint.symbol,
+                    constant: { dividend: constraint.constant, dividsor: 1 }
+                }))
+            }, "POST");
             setAnswerContent(htmlContent);
         } catch (error) {
             setAnswerContent(`Error : ${error.message}`);
@@ -73,16 +67,16 @@ function Simplex() {
             <h1>Operations Research</h1>
             <h2>Simplex Algorithm</h2>
             <div className="info">
-            The Simplex Method is an iterative procedure for solving linear programming problems with a large number of variables.
-             It was developed by G.B. Dantzig, an American mathematician. The method involves moving from one basic feasible solution to
-              another in a prescribed manner such that the value of the objective function is improved. The simplex method is applicable
-               to any problem that can be formulated in terms of a linear objective function subject to a set of linear constraints.
-                The computational procedure of the simplex method is best explained by a simple example. 
+                The Simplex Method is an iterative procedure for solving linear programming problems with a large number of variables.
+                It was developed by G.B. Dantzig, an American mathematician. The method involves moving from one basic feasible solution to
+                another in a prescribed manner such that the value of the objective function is improved. The simplex method is applicable
+                to any problem that can be formulated in terms of a linear objective function subject to a set of linear constraints.
+                The computational procedure of the simplex method is best explained by a simple example.
                 The method provides a systematic algorithm that consists of moving from one basic feasible solution to another in a prescribed
-                 manner such that the value of the objective function is improved. The procedure of jumping from vertex to vertex is repeated
-                  until an optimal solution is obtained.
-             The simplex method is widely used in business and economics for solving optimization problems. 
-                  <a href="https://en.wikipedia.org/wiki/Simplex_algorithm" target='blank'>Wikipedia</a>.
+                manner such that the value of the objective function is improved. The procedure of jumping from vertex to vertex is repeated
+                until an optimal solution is obtained.
+                The simplex method is widely used in business and economics for solving optimization problems.
+                <a href="https://en.wikipedia.org/wiki/Simplex_algorithm" target='blank'>Wikipedia</a>.
             </div>
 
             <div className="solver-container">

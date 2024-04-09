@@ -1,13 +1,14 @@
 import { useState } from "react";
+import useFetch from "../src/hooks/useFetch";
 
 function Transportation() {
     const [rows, setRows] = useState(0);
     const [columns, setColumns] = useState(0);
     const [grid, setGrid] = useState([]);
-    const [origins,setOrigins] = useState([]);
-    const [destinations,setDestinations] = useState([]);
-    const [answerContent,setAnswerContent] = useState("");
-    const [solvingMethod,setSolvingMethod] = useState("VA");
+    const [origins, setOrigins] = useState([]);
+    const [destinations, setDestinations] = useState([]);
+    const [answerContent, setAnswerContent] = useState("");
+    const [solvingMethod, setSolvingMethod] = useState("VA");
 
     const createTable = () => {
         const newGrid = [];
@@ -20,25 +21,25 @@ function Transportation() {
             newGrid.push(row);
         }
         setGrid(newGrid);
-        setOrigins(Array.from({length:rows},_=>0));
-        setDestinations(Array.from({length:columns},_=>0));
+        setOrigins(Array.from({ length: rows }, _ => 0));
+        setDestinations(Array.from({ length: columns }, _ => 0));
     }
 
-    const setCellValue = (row,column,e) => {
+    const setCellValue = (row, column, e) => {
         const newGrid = [...grid];
         let value = parseInt(e.target.value);
         newGrid[row][column] = isNaN(value) ? "" : value;
         setGrid(newGrid);
     }
-    
-    const setOriginValue = (row,e) => {
+
+    const setOriginValue = (row, e) => {
         const newOrigins = [...origins];
         let value = parseInt(e.target.value);
         newOrigins[row] = isNaN(value) ? "" : value;
         setOrigins(newOrigins);
     }
 
-    const setDestinationValue = (column,e) => {
+    const setDestinationValue = (column, e) => {
         const newDestinations = [...destinations];
         let value = parseInt(e.target.value);
         newDestinations[column] = isNaN(value) ? "" : value;
@@ -47,20 +48,13 @@ function Transportation() {
 
     const solve = async () => {
         try {
-            const res = await fetch("http://localhost:1000/tools/calc/or/transportation", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    costTable: grid,
-                    origins,
-                    destinations,
-                    method:solvingMethod
-                })
-            });
-            const data = await res.json();
-            const { data: { htmlContent } } = data;
+            const res = await useFetch("/tools/calc/or/transportation", {
+                costTable: grid,
+                origins,
+                destinations,
+                method: solvingMethod
+            }, 'POST');
+            const { data: { htmlContent } } = res;
             setAnswerContent(`<h3>Steps</h3>${htmlContent}`);
         } catch (error) {
             setAnswerContent(`Error : ${error.message}`);
@@ -72,13 +66,13 @@ function Transportation() {
             <h1>Operations Research</h1>
             <h2>Transportation Problem</h2>
             <div className="info">
-            he transportation problem is a mathematical optimization problem that deals with the allocation of goods
-             from several sources to several destinations. The objective is to minimize the total transportation cost 
-             while satisfying the supply and demand constraints. The problem was first formalized by the French mathematician
-              Gaspard Monge in 17811. The transportation problem is a special case of the linear programming problem and can be 
-              solved using several algorithms such as the North-West Corner Method, Least Cost Method, Vogel's Approximation Method, 
-              and the Modified Distribution Method2. You can learn more about the transportation problem and its applications in mathematics
-               and economics on <a href="https://en.wikipedia.org/wiki/Transportation_theory_%28mathematics%29">Wikipedia</a>.
+                he transportation problem is a mathematical optimization problem that deals with the allocation of goods
+                from several sources to several destinations. The objective is to minimize the total transportation cost
+                while satisfying the supply and demand constraints. The problem was first formalized by the French mathematician
+                Gaspard Monge in 17811. The transportation problem is a special case of the linear programming problem and can be
+                solved using several algorithms such as the North-West Corner Method, Least Cost Method, Vogel's Approximation Method,
+                and the Modified Distribution Method2. You can learn more about the transportation problem and its applications in mathematics
+                and economics on <a href="https://en.wikipedia.org/wiki/Transportation_theory_%28mathematics%29">Wikipedia</a>.
             </div>
             <h3>Transportation Solver</h3>
             <div className="info">
@@ -87,7 +81,7 @@ function Transportation() {
             <div className="solver">
                 <label>Enter number of workers or resources or rows : <input type="text" id="workers-input" value={rows} onInput={(e) => setRows(e.target.value)} /></label>
                 <label>Enter number of jobs or activities or columns : <input type="text" id="jobs-input" value={columns} onInput={(e) => setColumns(e.target.value)} /></label>
-                <label>Select solving method : 
+                <label>Select solving method :
                     <select value={solvingMethod} onInput={(e) => setSolvingMethod(e.target.value)}>
                         <option value="VA">Vogel's Approximation</option>
                         <option value="NW">NorthWest Corner</option>
@@ -108,7 +102,7 @@ function Transportation() {
                                 </td>
                             ))}
                             <td>
-                                <input type='text' className='cell origin' onInput={(e) => setOriginValue(i, e)} value={origins[i]} />    
+                                <input type='text' className='cell origin' onInput={(e) => setOriginValue(i, e)} value={origins[i]} />
                             </td>
                         </tr>
                     ))}
@@ -122,7 +116,7 @@ function Transportation() {
                 </tbody>
             </table>
                 <button className="submit-button" onClick={solve}>solve</button>
-                <div className="answer" dangerouslySetInnerHTML={{__html:answerContent}}>
+                <div className="answer" dangerouslySetInnerHTML={{ __html: answerContent }}>
                 </div>
             </>}
         </>

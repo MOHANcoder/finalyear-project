@@ -5,7 +5,7 @@ import './App.css'
 import Assignment from '../components/Assignment'
 import Transportation from '../components/Transportation';
 import Simplex from '../components/Simplex';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import Tools from '../components/Tools'
 import Ocr from '../components/Ocr';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -35,6 +35,8 @@ import CourseView from '../components/CourseView';
 import NavigationBar, { Menu } from '../components/NavigationBar';
 import { AccountCircle, Extension } from '@mui/icons-material';
 import Forum from '../components/Forum';
+import Profile from '../components/Profile';
+import useFetch from './hooks/useFetch';
 
 function App() {
 	const tools = [
@@ -81,6 +83,7 @@ function App() {
 	const isMobile = useMediaQuery({ maxWidth: 768 });
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [userRole, setUserRole] = useState('');
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const token = document.cookie.split(";").find(cookie => cookie.startsWith("token="));
@@ -97,25 +100,22 @@ function App() {
 
 	const handleLogout = async () => {
 		try {
-			await fetch('http://localhost:1000/logout', {
-				method: 'GET',
-				credentials: 'include'
-			});
-			window.location.href = "/";
-			// window.location.reload();
+			await useFetch('/logout');
+			navigate('/');
+			setIsAuthenticated(false);
 		} catch (error) {
 			console.log('Logout Failed', error.message);
 		}
 	}
 
 	return (
-		<BrowserRouter>
+		<>
 			{!isAuthenticated ?
 				<Routes>
 					<Route path='/'>
 						<Route index element={<Home />} />
 						<Route path='register' element={<Register />} />
-						<Route path='login' element={<Login />} />
+						<Route path='login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
 					</Route>
 				</Routes>
 				:
@@ -125,13 +125,13 @@ function App() {
 							userRole === 'student' &&
 							<Menu icon={<ExploreIcon />} content={"Explore"} link={'/explore'} />
 						}
-						<Menu icon={<BuildIcon/>} content={"Tools"} link={'/tools'}/>
-						<Menu icon={<SchoolIcon/>} content={"MyCourses"} link={"/mycourses"}/>
-						<Menu icon={<AccountCircle/>} content={"Profile"} link={'/'} />
-						<Menu icon={<LogoutIcon/>} content={"Logout"} link={"/logout"} isFooter={true} onClick={handleLogout} />
+						<Menu icon={<BuildIcon />} content={"Tools"} link={'/tools'} />
+						<Menu icon={<SchoolIcon />} content={"MyCourses"} link={"/mycourses"} />
+						<Menu icon={<AccountCircle />} content={"Profile"} link={'/'} />
+						<Menu icon={<LogoutIcon />} content={"Logout"} link={"/logout"} isFooter={true} onClick={handleLogout} />
 					</NavigationBar>
 					<main className={`main-container ${isMobile ? 'mobile' : ''}`} style={{
-						width:isMobile ? '100dvw' : collapsed ? '95dvw' : '74dvw'
+						width: isMobile ? '100dvw' : collapsed ? '95dvw' : '74dvw'
 					}}>
 						{/* <Sidebar collapsed={isMobile || collapsed}>
 						<Menu>
@@ -146,7 +146,7 @@ function App() {
 					</Sidebar> */}
 						<section className="main-content">
 							<Routes>
-								<Route path='/' element={userRole} />
+								<Route path='/' element={<Profile />} />
 								<Route path='/tools' element={<Tools tools={tools} />} />
 								<Route path='/tools/ocr' element={<Ocr />} />
 								<Route path='/tools/ocr/image' element={<Ocr />} />
@@ -163,13 +163,14 @@ function App() {
 								<Route path='/mycourses/edit/:id' element={<PageEditor />} />
 								<Route path='/explore/:id' element={<CourseEnrollment />} />
 								<Route path='/explore/view/:id' element={<CourseView />} />
-								<Route path='/explore/forum/:id' element={<Forum/>}/>
+								<Route path='/explore/forum/:id' element={<Forum />} />
+								<Route path='/logout' element={<Home/>} />
 							</Routes>
 						</section>
 					</main>
 				</>
 			}
-		</BrowserRouter>
+		</>
 	)
 }
 

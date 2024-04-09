@@ -1,4 +1,6 @@
 import { useState } from "react";
+import useFetch from '../src/hooks/useFetch';
+import Loader from './Loader';
 
 export default function Ocr() {
   const languages = [{ name: "English", code: "eng" },
@@ -102,20 +104,17 @@ export default function Ocr() {
   { name: "Yiddish", code: "yid" },
   ];
 
-  const [processedContent,setProcessedContent] = useState(' ');
+  const [processedContent, setProcessedContent] = useState(' ');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     setProcessedContent('');
-    try{
-      const res = await fetch('http://localhost:1000/tools/ocr/image',{
-        method:'POST',
-        body:formData
-      });
+    try {
+      const res = await useFetch('/tools/ocr/image', formData , 'POST',true,true);
       const data = await res.text();
       setProcessedContent(data);
-    }catch(error){
+    } catch (error) {
       setProcessedContent(error.message);
     }
   }
@@ -142,8 +141,8 @@ export default function Ocr() {
         </div>
         <input type="submit" value="submit" />
       </form>
-      <div className="processed-content" style={{padding:'2rem', textAlign:'justify'}}>
-        {processedContent ? (processedContent !== ' ' && <><h3>Processed Content : </h3>{processedContent}</>): <div>Processing....</div>}
+      <div className="processed-content" style={{ padding: '2rem', textAlign: 'justify' }}>
+        {processedContent ? (processedContent !== ' ' && <><h3>Processed Content : </h3>{processedContent}</>) : <div>Processing....<Loader/> </div>}
       </div>
     </>
   )

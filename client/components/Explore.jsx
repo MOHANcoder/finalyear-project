@@ -1,7 +1,6 @@
 import CourseCard from "./CourseCard";
 import { useEffect, useState } from "react";
 import "../styles/Explore.css";
-import { Search } from "@mui/icons-material";
 import useFetch from "../src/hooks/useFetch";
 import { useMediaQuery } from 'react-responsive';
 
@@ -14,13 +13,10 @@ export default function Explore() {
 
 	const fetchData = async () => {
 		try {
-			const res = await fetch('http://localhost:1000/explore', {
-				credentials: 'include'
-			});
+			const publishedCourses = await useFetch('/explore');
 			const data2 = await useFetch('/mycourses/enrolled');
-			const data = await res.json();
-			setCourses(data);
-			setFilteredCourses(data.filter(course => course.isPublished));
+			setCourses(publishedCourses);
+			setFilteredCourses(publishedCourses);
 			setEnrolledCourses(data2.data.map(data => data._id));
 		} catch (error) {
 			console.log(error.message);
@@ -29,7 +25,7 @@ export default function Explore() {
 
 	const handleSearch = (e) => {
 		const searchText = e.target.value;
-		setFilteredCourses(courses.filter(({name,isPublished}) => name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 && isPublished));
+		setFilteredCourses(courses.filter(({name}) => name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1));
 	}
 
 	useEffect(() => {

@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
+.profile{
+    height: 100%;
+}
+
+.banner{
+    background: url('../src/assets/profile-banner.jpg') center/cover no-repeat;
+    height: 30%;
+    border: 5px solid white;
+    box-sizing: border-box;
+}
+
+.pic{
+    display: flex;
+    justify-content: center;
+    margin-top: -100px;
+}
+
+.pic img{
+    width: 200px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.pic .edit-icon{
+    width: max-content;
+    height: max-content;
+    align-self: flex-end;
+    margin-left: -20px;
+    cursor: pointer;
+}
+
+.profile .info{
+    /* border: 1px solid; */
+    height: 70%;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+.profile > .info > h1{
+    font-size: xx-large;
+    margin: 15px;
+}
+
+.profile > .info > h4{
+    margin: 5px;
+}
+
+.role-badge{
+    background-color: rgb(147, 11, 243);
+    width: max-content;
+    margin:10px auto;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width:600px) {
+    .pic img{
+        width: 120px;
+    }
+}
+
+.loader-container{
+    margin: 10%;
+}
+
+.loader-container > *{
+    margin: auto;
+}

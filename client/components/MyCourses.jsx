@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { Edit, Delete, Publish, RemoveRedEye, Unpublished } from '@mui/icons-material';
 import useFetch from "../src/hooks/useFetch";
 
 export default function MyCourses({ role }) {
     const [courses, setCourses] = useState([]);
+    const navigate = useNavigate();
 
     const CourseListItem = ({ name, instructor, rating, price, summary, enrolledCount, thumbnail, _id, isPublished }) => {
 
         const deleteCourse = async () => {
             try {
-                const response = await fetch(`http://localhost:1000/mycourses/course/${_id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-                const { success, message } = await response.json();
+                const { success, message } = await useFetch(`/mycourses/course/${_id}`, 'DELETE');
                 if (success) {
                     alert(message);
-                    window.location.href = '/mycourses';
                 } else {
                     throw new Error(message);
                 }
             } catch (error) {
                 alert(error.message);
-                window.location.href = '/mycourses';
             }
+            navigate('/mycourses');
+            navigate(0);
         };
 
 
@@ -37,12 +34,12 @@ export default function MyCourses({ role }) {
                 const { success, message } = await useFetch(`/mycourses/${action}/${_id}`, {}, 'PUT');
                 if (success) {
                     alert(message);
-                    window.location.reload();
+                    navigate(0);
                 } else {
                     throw new Error(message);
                 }
             } catch (error) {
-                console.log(error.message);
+                alert('Error occurred');
             }
         }
 
@@ -96,18 +93,12 @@ export default function MyCourses({ role }) {
     const fetchCourses = async () => {
         try {
             if (role === "student") {
-                const res = await fetch('http://localhost:1000/mycourses/enrolled', {
-                    credentials: 'include'
-                });
-                const data = await res.json();
+                const data = await useFetch('/mycourses/enrolled');
                 if (data.success) {
                     setCourses(data.data);
                 }
             } else if (role === "instructor") {
-                const res = await fetch('http://localhost:1000/mycourses/created', {
-                    credentials: 'include'
-                });
-                const data = await res.json();
+                const data = await useFetch('/mycourses/created');
                 if (data.success) {
                     setCourses(data.data);
                 }

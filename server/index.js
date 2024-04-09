@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const ip = require('ip');
 const {connectDB} = require("./db");
 const toolsRoute = require("./routes/toolsRoute");
 const { register, login, authenticate, logout, authorize } = require("./controllers/auth");
@@ -10,7 +11,7 @@ const { getCourseBuildDetails, buildCourseStructure, deleteCourse, publishCourse
 const { createPage, deletePage, getPage, updatePageContent } = require("./controllers/page");
 const {deleteChapter} = require('./controllers/chapter');
 const {deleteModule} = require('./controllers/module');
-const {enroll} = require('./controllers/user');
+const {enroll, getProfileInfo, changeProfilePic} = require('./controllers/user');
 const { postMessage } = require("./controllers/chat");
 const { fetchForumData } = require("./controllers/forum");
 
@@ -18,7 +19,7 @@ require("dotenv").config();
 connectDB();
 
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:`http://${ip.address()}:5173`,
     credentials:true
 }));
 app.use(cookieParser());
@@ -49,6 +50,8 @@ app.put('/mycourses/publish/:course_id',authenticate,authorize(['instructor']),p
 app.put('/mycourses/unpublish/:course_id',authenticate,authorize(['instructor']),unPublishCourse);
 app.post('/forum/:forumId',authenticate,postMessage);
 app.get('/forum/:course_id',authenticate,fetchForumData);
+app.get('/profile',authenticate,getProfileInfo);
+app.put('/profile/pic',authenticate,changeProfilePic);
 
 app.use("*", (req, res) => {
     return res.status(404).send("<html><head><title>404</title></head><body><h1>Page Not Found</h1></body></html>");
@@ -63,5 +66,5 @@ app.use((error,req,res,next) => {
 });
 
 app.listen(1000,()=>{
-    console.log("server started at http://localhost:1000");
+    console.log(`server started at http://${ip.address()}:1000`);
 });

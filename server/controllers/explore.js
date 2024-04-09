@@ -32,8 +32,8 @@ module.exports = {
     },
     getAllPublishedCourses : async (req,res,next) => {
         try{
-            const courses = await Course.find().populate({
-                path:'createdBy'
+            const courses = await Course.find({isPublished:true}).populate({
+                path:'createdBy' //To Fix - selected fields
             });
             res.status(200).json(courses);
         }catch(error){

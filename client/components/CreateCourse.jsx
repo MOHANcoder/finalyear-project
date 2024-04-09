@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useFetch from "../src/hooks/useFetch";
 
 export default function CreateCourse() {
 
@@ -47,7 +48,7 @@ export default function CreateCourse() {
     const [courseType, setCourseType] = useState('free');
     const [thumbnail, setThumbnail] = useState('');
     const [helperText, setHelperText] = useState({ name: '', price: '' });
-    const [passed,setPassed] = useState(true);
+    const [passed, setPassed] = useState(true);
 
     return (
         <main style={{
@@ -66,9 +67,9 @@ export default function CreateCourse() {
                 <div>
                     <h2 style={{ textAlign: 'center' }}>Course Details</h2>
                     {!passed && <p style={{
-                        color:'red',
-                        textAlign:'center'
-                    }}>Invalid values are entered.</p> }
+                        color: 'red',
+                        textAlign: 'center'
+                    }}>Invalid values are entered.</p>}
                 </div>
                 <form
                     style={{
@@ -81,29 +82,24 @@ export default function CreateCourse() {
 
                     onSubmit={async (e) => {
                         e.preventDefault();
-                        if(!Object.values(helperText).every(value => value === '')){
+                        if (!Object.values(helperText).every(value => value === '')) {
                             setPassed(false);
                             return;
                         }
                         setPassed(true);
                         try {
-                            const res = await fetch('http://localhost:1000/mycourses/create', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                credentials: 'include',
-                                body: JSON.stringify({
-                                    name: e.target.name.value,
-                                    thumbnail: e.target.thumbnail.value,
-                                    price:parseInt(e.target.price.value),
-                                    summary:e.target.summary.value
-                                })
-                            });
-                            const data = await res.json();
+                            const data = await useFetch('/mycourses/create', {
+                                name: e.target.name.value,
+                                thumbnail: e.target.thumbnail.value,
+                                price: parseInt(e.target.price.value),
+                                summary: e.target.summary.value
+                            },
+                                "POST"
+                            );
                             if (data.error !== undefined) {
                                 throw new Error(data.error.message);
                             }
+                            alert('Course Created');
                             window.location.href = "/mycourses";
                         } catch (error) {
                             alert(error.message);

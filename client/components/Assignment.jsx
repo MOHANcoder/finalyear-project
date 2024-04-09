@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../styles/Assignment.css';
+import useFetch from '../src/hooks/useFetch';
 
 function Assignment() {
     const [isLoaded, setLoaded] = useState(false);
@@ -7,8 +8,8 @@ function Assignment() {
     const [columns, setColumns] = useState(0);
     const [grid, setGrid] = useState([]);
     const [answerContent, setAnswerContent] = useState("");
-    
-    const setCellValue = (row,column,e) => {
+
+    const setCellValue = (row, column, e) => {
         const newGrid = [...grid];
         let value = parseInt(e.target.value);
         newGrid[row][column] = isNaN(value) ? "" : value;
@@ -29,18 +30,13 @@ function Assignment() {
 
     const solve = async () => {
         try {
-            const res = await fetch("http://localhost:1000/tools/calc/or/assignment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    costTable: grid
-                })
-            });
-            const data = await res.json();
-            const { data: { htmlContent } } = data;
-            setAnswerContent(`<h3>Steps</h3>${htmlContent}`);
+            const { success, data } = await useFetch("/tools/calc/or/assignment", { costTable: grid }, "POST");
+            const { htmlContent } = data;
+            if (success) {
+                setAnswerContent(`<h3>Steps</h3>${htmlContent}`);
+            }else{
+                throw new Error('Cannot able to fetch');
+            }
         } catch (error) {
             setAnswerContent(`Error : ${error.message}`);
         }
@@ -77,7 +73,7 @@ function Assignment() {
                         <tr key={i}>
                             {row.map((col, j) => (
                                 <td key={j} >
-                                    <input type='text' className='cell' onInput={(e) => setCellValue(i,j,e)} />
+                                    <input type='text' className='cell' onInput={(e) => setCellValue(i, j, e)} />
                                 </td>
                             ))}
                         </tr>
@@ -85,7 +81,7 @@ function Assignment() {
                 </tbody>
             </table>
                 <button className="submit-button" onClick={solve}>solve</button>
-                <div className="answer" dangerouslySetInnerHTML={{__html:answerContent}}>
+                <div className="answer" dangerouslySetInnerHTML={{ __html: answerContent }}>
                 </div></>}
         </>
     );
