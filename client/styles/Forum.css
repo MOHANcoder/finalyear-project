@@ -45,8 +45,29 @@
     padding: 5px;
     box-sizing: border-box;
     width: max-content;
+    max-width: 40%;
+    font-family: 'Poppins',sans-serif;
+    font-size: 0.8rem;
+    word-break: break-all;
+    text-align: justify;
 }
 
 .chat.self{
     align-self: flex-end;
+}
+
+.send-time{
+    margin-top: 5px;
+}
+
+.send-time,.sender-name{
+    font-size: smaller;
+}
+
+
+
+.course-info > h1{
+    font-size: xx-large;
+    text-align: center;
+    margin: 5px;
 }

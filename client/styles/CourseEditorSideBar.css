@@ -29,6 +29,7 @@
 
 .courseEditorSideBar {
     transition: width 0.7s ease;
+    box-sizing: border-box;
 }
 
 .side-bar-divider {
@@ -67,6 +68,7 @@
 
 .courseEditorSideBar.closed{
     width: 0dvw;
+    padding: 0;
 }
 
 .course-editor-sidebar-mobile-closed{

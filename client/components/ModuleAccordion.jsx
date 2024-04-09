@@ -29,6 +29,7 @@ export default function ModuleAccordion({ courseId }) {
 
     return (
         <div className="accordion">
+            <h2>Modules</h2>
             <button onClick={() => dispatch(saveToCloud())}>SAVE</button>
             <button onClick={addNewModule}>+</button>
             {Object.entries(modules).map(([id, module]) =>

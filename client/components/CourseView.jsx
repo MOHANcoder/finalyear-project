@@ -56,7 +56,7 @@ export default function CourseView() {
                         }
                     />
                 )}
-                <div className="forum"><h4><Link to={`/explore/forum/${id}`}>Discussion Forum</Link></h4></div>
+                <div className="forum-link"><h4><Link to={`/explore/forum/${id}`}>Discussion Forum</Link></h4></div>
             </div>
             <div className="sidebar-divider">
                 <div className="sidebar-close" onClick={() => setIsSideBarClosed(!isSideBarClosed)}>

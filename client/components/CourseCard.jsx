@@ -55,6 +55,8 @@ export default function CourseCard({
                     textOverflow: 'ellipsis',
                     overflow: "hidden",
                     height: '50px',
+                    width:'100%',
+                    whiteSpace:'nowrap',
                     fontSize:'small'
                 }}>{summary}</div>
 
