@@ -5,24 +5,25 @@ module.exports = {
     async fetchForumData(req,res,next){
         try{
             const {course_id} = req.params;
-            let course = await Course.findById(course_id).populate({
+            const selectQuery = {
                 path:'forum',
                 populate:{
-                    path:'chats'
-                }
-            });
-            if(course.forum === undefined){
-                let forums = await Forum.insertMany({chats:[chat[0]._id],polls:[]});
-                let course = await Course.findByIdAndUpdate(course_id,{$set:{forum:forums[0]._id}}).populate({
-                    path:'forum',
+                    path:'chats',
                     populate:{
-                        path:'chats'
+                        path:'sentBy',
+                        select:'name'
                     }
-                });
+                }
+            };
+            let course = await Course.findById(course_id).populate(selectQuery);
+            if(course.forum === undefined){
+                let forums = await Forum.insertMany({chats:[],polls:[]});
+                course = await Course.findByIdAndUpdate(course_id,{$set:{forum:forums[0]._id}}).populate(selectQuery);
+                console.log(forum);
             }
             res.status(200).json({
                 success:true,
-                data:course.forum
+                data:{forum:course.forum,course:{name:course.name}}
             })
         }catch(error){
             next(error)

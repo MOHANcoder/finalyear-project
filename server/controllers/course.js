@@ -39,6 +39,7 @@ module.exports = {
             course.enrolledStudents.forEach(async (id) => {
                 await User.findByIdAndUpdate(id,{$pull:{enrolledCourses:course_id}});
             });
+            await User.findByIdAndUpdate(course.createdBy,{$pull:{createdCourses:course_id}});
             await Course.findByIdAndDelete(course_id);
             res.status(200).json({
                 success: true,
