@@ -1,7 +1,7 @@
 const useFetch = async (url, body = {}, method = 'GET', onlyResponse = false, dontStringify = false) => {
     try {
         if (url.startsWith('/')) {
-            url = 'http://192.168.177.112:1000' + url;
+            url = 'http://192.168.43.18:1000' + url;
         }
         if (typeof body === 'string') {
             method = body;
