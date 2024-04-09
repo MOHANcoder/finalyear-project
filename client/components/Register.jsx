@@ -105,7 +105,7 @@ export default function Register() {
                             navigate('/login');
                             navigate(0);
                         }else{
-                            throw new Error(error.message);
+                            throw new Error(error.message ?? 'Some Problem Occurred');
                         }
                     }catch(error){
                         alert(error.message);
