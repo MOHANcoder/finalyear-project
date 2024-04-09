@@ -66,7 +66,7 @@ function Transportation() {
             <h1>Operations Research</h1>
             <h2>Transportation Problem</h2>
             <div className="info">
-                he transportation problem is a mathematical optimization problem that deals with the allocation of goods
+                The transportation problem is a mathematical optimization problem that deals with the allocation of goods
                 from several sources to several destinations. The objective is to minimize the total transportation cost
                 while satisfying the supply and demand constraints. The problem was first formalized by the French mathematician
                 Gaspard Monge in 17811. The transportation problem is a special case of the linear programming problem and can be
