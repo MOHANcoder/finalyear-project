@@ -65,6 +65,6 @@ app.use((error,req,res,next) => {
     });
 });
 
-app.listen(1000,()=>{
+app.listen(process.env.PORT,()=>{
     console.log(`server started at http://${ip.address()}:1000`);
 });
