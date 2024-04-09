@@ -1,6 +1,3 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import './App.css'
 import Assignment from '../components/Assignment'
 import Transportation from '../components/Transportation';
@@ -133,17 +130,6 @@ function App() {
 					<main className={`main-container ${isMobile ? 'mobile' : ''}`} style={{
 						width: isMobile ? '100dvw' : collapsed ? '95dvw' : '74dvw'
 					}}>
-						{/* <Sidebar collapsed={isMobile || collapsed}>
-						<Menu>
-							<MenuItem className='menu1' icon={<MenuRoundedIcon/>} onClick={() => setCollapsed(!collapsed)}>
-								<h2>Welcome</h2>
-							</MenuItem>
-							<MenuItem icon={<ExploreIcon/>} component={<Link to='/explore' />}>Explore</MenuItem>
-							<MenuItem className='menu2' icon={<BuildIcon />} component={<Link to="/tools" />}>Tools</MenuItem>
-							<MenuItem icon={<SchoolIcon/>} component={<Link to="/mycourses"/>}>Mycourses</MenuItem>
-							<MenuItem icon={<LogoutIcon/>} onClick={handleLogout}>Logout</MenuItem>
-						</Menu>
-					</Sidebar> */}
 						<section className="main-content">
 							<Routes>
 								<Route path='/' element={<Profile />} />
